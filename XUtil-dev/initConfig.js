@@ -2,9 +2,9 @@ var Path = require('path'),
 	config = require('../config'),
 	renderedConfig = {};
 
-var root = Path.dirname(process.cwd() + '');
+var root = Path.dirname(process.cwd());
 
-var srcPaths = config.targetPaths,
+var srcPaths = config.paths,
 	i,
 	renderedPath,
 	targetPaths = [];
