@@ -1,6 +1,6 @@
 /**
  * Created by shenjiao on 15/3/2.
- * 主进程，监视server.js文件，文件发生改动时自动重启server.js进程
+ * 主进程监视server.js文件，同时启动一个运行着server.js的子进程，文件发生改动时自动重启server.js
  */
 
 var createServer = require('./server'),
