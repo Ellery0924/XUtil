@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 	var walker=require('./node_utils/dirWalker');
 	var fs=require('fs');
-    var XUtilRoot = require('./config').XUtilRoot;
+    var XUtilRoot = require('./initConfig').XUtilRoot;
 	
 	//加载依赖模块
 	grunt.loadNpmTasks('grunt-contrib-uglify');

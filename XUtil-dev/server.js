@@ -1,12 +1,12 @@
-
-module.exports=function(){
 //NodeJS编写的文件监控服务器
+module.exports=function(){
+
 	var SocketIo = require('socket.io'),
 		http = require('http'),
 		walker = require('../node_utils/dirWalker'),
 		watchFile = require('../node_utils/utils').watchFile,
-		REFRESH_LAG = parseInt(require('../config').lag, 10) || 2000,
-		PORT=require('../config').port;
+		REFRESH_LAG = parseInt(require('./initConfig').lag, 10) || 2000,
+		PORT=require('./initConfig').port;
 
 	var pid = process.pid;
 
@@ -14,15 +14,15 @@ module.exports=function(){
 		console.log(req.url);
 	};
 
-//创建服务器
+//  创建服务器
 	var server = http.createServer(handler);
 
-//socket
+//  socket
 	var io = SocketIo(server);
-//监控文件列表
+//  监控文件列表
 	var files = [];
 
-	var targetPaths = require('../config').targetPaths,
+	var targetPaths = require('./initConfig').targetPaths,
 		path,
 		i,
 		tempFiles;

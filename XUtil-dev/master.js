@@ -1,37 +1,49 @@
 /**
  * Created by shenjiao on 15/3/2.
+ * 主进程，监视server.js文件，文件发生改动时自动重启server.js进程
  */
 
-var createServer=require('./server'),
+var createServer = require('./server'),
 	watchFile = require('../node_utils/utils').watchFile,
-	cluster=require('cluster');
+	cluster = require('cluster');
 
-if(cluster.isMaster){
-	var appWorker=cluster.fork();
+function watch() {
+	var i = 0, filename;
 
-	cluster.on('restart',function(){
+	for (; i < arguments.length; i++) {
+
+		filename = arguments[i].toString();
+
+		watchFile(filename, function (e) {
+			if (e) {
+				console.log(e);
+			}
+			else {
+				console.log('server.js has been modified, refreshing...');
+				cluster.emit('restart');
+			}
+		});
+	}
+}
+
+if (cluster.isMaster) {
+	var appWorker = cluster.fork();
+
+	cluster.on('restart', function () {
 		appWorker.kill();
-		appWorker=cluster.fork();
+		appWorker = cluster.fork();
 	});
 
-	watchFile('./server.js',function(e){
-		if(e){
-			console.log(e);
-		}
-		else{
-			console.log('server.js has been modified, refreshing...');
-			cluster.emit('restart');
-		}
-	});
+	watch('./server.js', '../config.json', './initConfig.js');
 
-	process.on('SIGINT',function(){
+	process.on('SIGINT', function () {
 		console.log('Shutting down server...');
 		appWorker.kill();
 		process.exit(130);
 	});
 
 }
-else{
+else {
 	createServer();
 }
 
