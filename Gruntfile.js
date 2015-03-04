@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
 	var walker=require('./node_utils/dirWalker'),
-		fs=require('fs'),
-		Path=require('path');
+		fs=require('fs');
 
     var XUtilRoot = process.cwd()+'/XUtil';
 
