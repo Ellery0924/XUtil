@@ -3,7 +3,7 @@
  * 主进程监视server.js文件，同时启动一个运行着server.js的子进程，文件发生改动时自动重启server.js
  */
 
-var startService = require('./server'),
+var initService = require('./server'),
 	watchFile = require('../node_utils/utils').watchFile,
 	cluster = require('cluster');
 
@@ -44,6 +44,6 @@ if (cluster.isMaster) {
 
 }
 else {
-	startService();
+	initService();
 }
 
