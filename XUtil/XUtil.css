@@ -1,0 +1,511 @@
+@CHARSET "UTF-8";
+
+.XUtil-errorHint {
+    color: red;
+}
+
+.xTable-table table, .xTable-table td {
+    font: 100% Arial, Helvetica, sans-serif;
+}
+
+.xTable-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.xTable-table th, .xTable-table td {
+    text-align: left;
+    padding: .5em;
+    border: 1px solid #fff;
+    word-break: break-all;
+}
+
+.rowCb > .selectRow {
+    vertical-align: middle;
+}
+
+.xTable-table #xTable-selectAll {
+    vertical-align: middle;
+}
+
+.xTable-maxPage {
+    display: inline-block;
+    float: left;
+    font-size: 12px;
+    height: 15px;
+    line-height: 14px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 6px;
+}
+
+.xTable-table .colName {
+    background-color: #3f4e79;
+    color: white;
+    cursor: default;
+}
+
+.xTable-table .selectAllTd {
+    color: white;
+}
+
+.xTable-table tr {
+    background-color: #E2E2E2;
+}
+
+.xTable-table {
+    display: table;
+    width: 100%;
+}
+
+.xTable-table .xTable-controller {
+    width: 100%;
+    height: 30px;
+}
+
+.xTable-table .xTable-pageController {
+    float: left;
+    height: 30px;
+}
+
+.xTable-table .xTable-pageSizeController {
+    float: right;
+    font-size: 14px;
+    height: 30px;
+}
+
+.xTable-table .xTable-pageController .functionButton {
+    list-style-type: none !important;
+    margin-top: 3px !important;
+    margin-left: 2px !important;
+    float: left !important;
+    height: 16px !important;
+    width: 16px !important;
+}
+
+.xTable-table .xTable-pageController .funcButton {
+    float: left;
+    margin-left: 3px;
+    height: 20px;
+    width: 80px;
+    font-size: 12px;
+    margin-top: 2px;
+    padding: 0px;
+}
+
+.xTable-table .xTable-controller .xTable-gotoBox {
+    font-size: 12px;
+    width: 30px;
+    height: 15px;
+    font-size: 10px;
+    float: left;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 0.4em;
+    margin-bottom: 0.8em;
+    border: 1px solid #e0dfdf;
+    border-radius: 4px;
+}
+
+.xTable-table .xTable-pageSizeController .xTable-pageSizeSelector {
+    font-size: 10px !important;
+    height: 25px;
+    border: 1px solid #e0dfdf;
+    padding: 0.4em;
+    border-radius: 4px;
+    margin-bottom: 0.8em;
+}
+
+.xTable-table .xTable-selectAllTd {
+    width: 2%;
+    min-width: 20px;
+    background-color: #3f4e79;
+}
+
+.xTable-table .colNameText {
+    display: inline;
+    vertical-align: middle;
+    line-height: 19px;
+    margin: 0px !important;
+
+}
+
+.xTable-table .orderTag {
+    margin-right: 5px;
+    float: right;
+    width: 10px;
+    height: 18px
+}
+
+.xTable-table .openFilterLi {
+    list-style-type: none;
+    float: right;
+}
+
+.xTable-table .xTable-pageController .openSetV {
+    float: left;
+    margin-left: 3px;
+    height: 20px;
+    width: 60px;
+    font-size: 12px;
+    margin-top: 2px;
+    padding: 0px;
+}
+
+.xTable-table .dataCell a {
+    color: #2485ae;
+}
+
+.subVCol {
+    display: inline;
+    width: 100%;
+}
+
+.tempMessage {
+    padding: 20px;
+}
+
+.xTable-table .resetData {
+    float: right;
+    height: 20px;
+    width: 80px;
+    font-size: 12px;
+    margin-right: 10px;
+    margin-top: 2px;
+    padding: 0px;
+}
+
+.xTable-table .cFilterData {
+    float: right;
+    height: 20px;
+    width: 80px;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-top: 2px;
+    padding: 0px;
+}
+
+.xFilter-searchDiv {
+    width: 100%;
+    border-bottom: 1px solid #b4b4b4;
+    padding-bottom: 5px;
+    font-size: 18px;
+}
+
+.xFilter-searchDiv > div {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.xFilter-filterResult .nameCell {
+    width: 100% !important;
+}
+
+.xFilter-searchDiv .xFilter-filterStr {
+    width: 180px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    padding: 0.5em 0.2em;
+    line-height: 22px;
+    border: 1px solid #e0dfdf;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.XFilter-matchResult {
+    float: right;
+}
+
+.red {
+    color: red;
+}
+
+.xFilter-searchDiv .matchRadios {
+    display: inline-block;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.xFilter-searchDiv .matchRadios div {
+    display: inline;
+}
+
+.xFilter-filterResult {
+    max-height: 200px;
+    max-width: 370px;
+    margin-top: 10px;
+    overflow: auto;
+    width: 100%;
+    font-size: 16px;
+}
+
+.xTable-table .tempMessage {
+    padding: 20px;
+}
+
+.xTable-table .rowHover {
+    background-color: rgb(175, 174, 174);
+    color: #fff;
+}
+
+.xTable-table .rowSelect {
+    background-color: rgb(175, 174, 174);
+    color: #fff;
+}
+
+.xTable-table .editHeader {
+    background-color: #3f4e79;
+    color: white;
+    cursor: default;
+    width: 70px;
+}
+
+.xTable-table .editTd input {
+    width: 60px !important;
+    height: 25px !important;
+    padding: 2px !important;
+    font-size: 12px !important;
+}
+
+.xTable-table .dataCell .editInput {
+    height: 20px;
+    padding: 0;
+    margin: 0;
+    width: 96%;
+    font-size: inherit;
+    background: #fff;
+    border: 1px solid #e0dfdf;
+    border-radius: 5px;
+}
+
+.xFilter-filterResult input {
+    vertical-align: middle;
+}
+
+.xFilter-filterResult .xFilter-nameTag {
+    vertical-align: middle;
+}
+
+.xFilter-searchDiv .matchRadios .xFilter-radioSpan {
+    vertical-align: middle;
+}
+
+.xFilter-searchDiv input[type=radio] {
+    vertical-align: middle
+}
+
+.xFilter-searchDiv .XFilter-searchBtn {
+    margin-left: 2px;
+}
+
+.xTable-table .dataCell input[type=button] {
+    padding: 0.2em 0.5em;
+    min-width: 4em;
+}
+
+.XMenu, .XMenu.horizontal .XMenuSubMenu {
+    width: 150px;
+    background: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.XMenu li {
+    list-style: none;
+}
+
+.XMenu ul {
+    margin: 0;
+    padding: 0;
+}
+
+.XMenu.vertical .XMenuSubMenu {
+    border-radius: 0px;
+    border: none;
+}
+
+.XMenu.vertical .XMenuItemLabel {
+    border-left: 1px dotted #000;
+    position: relative;
+}
+
+.XMenu .XMenuItemLabel:hover {
+    background: #aaa;
+    color: #fff;
+    cursor: default;
+}
+
+.XMenu .opened {
+    background: #aaa;
+    color: #fff;
+}
+
+.XMenu.vertical .XMenuItemIcon {
+    display: inline-block;
+    margin: 1em 0 0;
+    position: absolute;
+    width: 17px;
+    border-top: 1px dotted #aaa;
+    height: 6px;
+}
+
+.XMenu.vertical .popupItemLabel > .XMenuItemIconRight {
+    background: url("images/sort_desc.gif") no-repeat scroll center center rgba(0, 0, 0, 0);
+    height: 16px;
+    position: absolute;
+    right: 3px;
+    width: 16px;
+    top: 0.5em;
+}
+
+.XMenu.horizontal .popupItemLabel {
+    position: relative;
+}
+
+.XMenu.horizontal .popupItemLabel > .XMenuItemIconRight {
+    background: url("images/sort_desc.gif") no-repeat scroll center center rgba(0, 0, 0, 0);
+    height: 12px;
+    position: absolute;
+    right: 3px;
+    width: 16px;
+    top: 0.5em;
+    transform: rotate(270deg);
+}
+
+.XMenu.vertical .popupItemLabel.opened > .XMenuItemIconRight {
+    right: 6px;
+    transform: rotate(180deg);
+}
+
+.XMenu .XMenuItemLabelText {
+    padding: 0.5em 0;
+    margin-left: 20px;
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.XMenu.vertical .firstLevelItem > .XMenuItemLabel > .XMenuItemIcon {
+    border-top: none;
+}
+
+.XMenu .firstLevelItem > .XMenuItemLabel {
+    border-left: none;
+}
+
+.XWaterfall-component {
+    position: absolute !important;
+}
+
+.XDialog {
+    border: 1px solid;
+    background: #fff;
+    box-shadow: 1px 1px 3px #aaaaaa;
+}
+
+.XDialog .XDialogTitle {
+    background: none repeat scroll 0 0 #3f4e79;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    position: relative;
+    color: #fff;
+}
+
+.XDialog .XDialogContent {
+    overflow: auto;
+}
+
+.XDialog .closeBtn {
+    height: 10px;
+    line-height: 10px;
+    position: absolute;
+    right: 9px;
+    top: 10px;
+    width: 10px;
+    cursor: pointer;
+    background: url('images/closebtn.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.XDialog .closeBtn:hover {
+    background: url('images/closebtn-hover.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.XDialog .titleText {
+    margin-left: 0.8em;
+    font-size: 14px;
+    width: 80%;
+    display: inline-block;
+}
+
+.XAccordion {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.XAccordion .titleText,
+.XAccordion .closebtn {
+    cursor: pointer;
+}
+
+.XAccordion .XAccordion-container {
+    margin-top: 2px;
+}
+
+.XAccordion .XAccordion-container:first-child {
+    margin-top: 0;
+}
+
+.XAccordion .XAccordion-title {
+    background: #3f4e79;
+    color: #fff;
+    font-size: 14px;
+    height: 2em;
+    vertical-align: middle;
+    line-height: 2em;
+    position: relative;
+    border-radius: 4px;
+}
+
+.XAccordion .titleText {
+    width: 70%;
+    display: inline-block;
+    margin-left: 0.5em;
+}
+
+.XAccordion .closebtn {
+    height: 10px;
+    line-height: 10px;
+    position: absolute;
+    right: 9px;
+    top: 10px;
+    width: 10px;
+    cursor: pointer;
+    background: url('images/closebtn.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.XAccordion .closebtn:hover {
+    background: url('images/closebtn-hover.png') no-repeat;
+    background-size: 100% 100%;
+}
+
+.XAccordion .XAccordion-content {
+    overflow: auto;
+
+}
+
+.xPopout {
+    border: 1px solid #aaaaaa;
+    background-color: #fff;
+    border-radius: 4px;
+    overflow: auto;
+    padding: 10px;
+    min-width: 200px;
+}

@@ -1,0 +1,15 @@
+//类UMD模式的包装器，包装源代码以支持AMD和全局变量模式
+(function(factory) {
+	// 对AMD的支持
+	if (typeof define === "function" && define.amd) {
+
+		// 在这里修改jquery-ui的模块名称
+		define([ 'jquery', 'jquery-ui' ], factory);
+	}
+	// 对全局变量的支持
+	else {
+		factory(jQuery);
+	}
+})(function($) {
+
+"use strict";

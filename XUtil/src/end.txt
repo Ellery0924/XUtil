@@ -1,0 +1,11 @@
+/*
+ * 源文件：src/end.js
+ */
+
+//暴露全局变量
+exports.XUtil = XUtil;
+exports.myUtil = XUtil;
+
+return XUtil;
+
+});
