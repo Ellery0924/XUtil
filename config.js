@@ -13,7 +13,8 @@
         targetPaths: [
             XUtilRoot + 'src',
             XUtilRoot + 'tests'
-        ]
+        ],
+	    port:45032
     };
 
     module.exports = config;

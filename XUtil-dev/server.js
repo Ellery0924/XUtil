@@ -5,7 +5,8 @@ module.exports=function(){
 		http = require('http'),
 		walker = require('../node_utils/dirWalker'),
 		watchFile = require('../node_utils/utils').watchFile,
-		refreshLag = parseInt(require('../config').lag, 10) || 2000;
+		REFRESH_LAG = parseInt(require('../config').lag, 10) || 2000,
+		PORT=require('../config').port;
 
 	var pid = process.pid;
 
@@ -49,13 +50,13 @@ module.exports=function(){
 					setTimeout(function () {
 						io.sockets.emit('changed', file);
 						console.log('File changed, refreshing browser...');
-					}, refreshLag);
+					}, REFRESH_LAG);
 				}
 			}, 10);
 		});
 	});
 
-	server.listen(45032);
+	server.listen(PORT);
 
 	console.log(
 		'XUtil-dev: Start watching:\n' +
