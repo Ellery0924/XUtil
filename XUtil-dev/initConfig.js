@@ -1,22 +1,19 @@
-(function (module) {
+var Path = require('path'),
+	config = require('../config'),
+	renderedConfig = {};
 
-	var Path = require('path'),
-		config = require('../config'),
-		renderedConfig = {};
+var root = Path.dirname(process.cwd() + '');
 
-	var root = Path.dirname(process.cwd() + '');
+var srcPaths = config.targetPaths,
+	i,
+	renderedPath,
+	targetPaths = [];
 
-	var srcPaths = config.targetPaths,
-		i,
-		renderedPath,
-		targetPaths = [];
+for (i = 0; i < srcPaths.length; i++) {
+	renderedPath = root + srcPaths[i];
+	targetPaths.push(renderedPath);
+}
 
-	for (i = 0; i < srcPaths.length; i++) {
-		renderedPath = root + srcPaths[i];
-		targetPaths.push(renderedPath);
-	}
+renderedConfig.targetPaths = targetPaths;
 
-	renderedConfig.targetPaths = targetPaths;
-
-	module.exports = renderedConfig;
-})(module);
+module.exports = renderedConfig;
