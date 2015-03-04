@@ -59,7 +59,7 @@ module.exports=function(){
 	server.listen(PORT);
 
 	console.log(
-		'XUtil-dev: Start watching:\n' +
+		'XUtil-dev: Start watching files:\n' +
 		targetPaths.join('\n') +
 		'\non process ' +
 		pid
