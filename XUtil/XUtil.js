@@ -46,7 +46,7 @@ var exports = window;
  * 包括: rootPath:本库文件所在目录。每次使用库前需要修改config.rootPath
  */
 XUtil.config = {
-	rootPath: "vendor/XUtil"
+	rootPath: "XUtil"
 };
 
 //工具函数集

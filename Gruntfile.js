@@ -1,7 +1,11 @@
 module.exports = function(grunt) {
-	var walker=require('./node_utils/dirWalker');
-	var fs=require('fs');
-    var XUtilRoot = require('./initConfig').XUtilRoot;
+	var walker=require('./node_utils/dirWalker'),
+		fs=require('fs'),
+		Path=require('path');
+
+    var XUtilRoot = process.cwd()+'/XUtil';
+
+	console.log(XUtilRoot);
 	
 	//加载依赖模块
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -45,10 +49,10 @@ module.exports = function(grunt) {
 			},
 			XUtilHint:{
 				src: ['<%=XUtilPath%>/src/*.js']
-			},
-			demoHint:{
-				src:['WebContent/js/*.js','!WebContent/js/example.min.js']
 			}
+			//demoHint:{
+			//	src:['WebContent/js/*.js','!WebContent/js/example.min.js']
+			//}
 		},
 		//不使用requirejs的项目打包
 		//合并js文件
@@ -87,7 +91,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			XUtilCssUglify: {
 				files: {
-					'<%=XUtilPath%>/XUtil.min.css': ['WebContent/vendor/XUtil/XUtil.css']
+					'<%=XUtilPath%>/XUtil.min.css': ['XUtil/XUtil.css']
 				}
 			}
 		},
@@ -114,7 +118,7 @@ module.exports = function(grunt) {
 	//使用了node原生模块fs和从combine-dev抄过来的dirWalker
 	grunt.registerTask('widgets',function(){
 		
-		var root='WebContent/vendor/XUtil/',
+		var root=XUtilRoot+'/',
 			srcPath=root+'src/',
 			jsFiles=walker(srcPath).js,
 			baseFile=srcPath+'base.js',
@@ -144,7 +148,7 @@ module.exports = function(grunt) {
 			if(fName!=='base.js'&&fName!=='preload.js'){
 
 				widget=fs.readFileSync(fPath);
-				destPath='WebContent/vendor/XUtil/widgets/'+fName;
+				destPath=root+'widgets/'+fName;
 			
 				fs.writeFileSync(destPath,head,'utf-8');
 				fs.appendFileSync(destPath,base,'utf-8');
