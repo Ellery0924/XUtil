@@ -55,14 +55,12 @@ module.exports=function(){
 		});
 	});
 
-	server.targetPaths=targetPaths;
-	server.pid=pid;
 	server.listen(45032);
 
 	console.log(
 		'XUtil-dev: Start watching:\n' +
-		server.targetPaths.join('\n') +
+		targetPaths.join('\n') +
 		'\non process ' +
-		server.pid
+		pid
 	);
 };
