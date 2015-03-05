@@ -4,27 +4,8 @@
  */
 
 var initService = require('./server'),
-	watchFile = require('../node_utils/utils').watchFile,
+	watch = require('./node_utils/fileWatcher').watchWithEmitter,
 	cluster = require('cluster');
-
-function watch() {
-	var i = 0, filename;
-
-	for (; i < arguments.length; i++) {
-
-		filename = arguments[i].toString();
-
-		watchFile(filename, function (e) {
-			if (e) {
-				console.log(e);
-			}
-			else {
-				console.log('server.js has been modified, refreshing...');
-				cluster.emit('restart');
-			}
-		});
-	}
-}
 
 if (cluster.isMaster) {
 	var appWorker = cluster.fork();
@@ -34,7 +15,7 @@ if (cluster.isMaster) {
 		appWorker = cluster.fork();
 	});
 
-	watch('./server.js', '../config.json', './initConfig.js');
+	watch('./server.js', './config.json', './initConfig.js','restart',cluster);
 
 	process.on('SIGINT', function () {
 		console.log('Shutting down server...');

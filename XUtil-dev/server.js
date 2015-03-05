@@ -3,8 +3,8 @@ module.exports=function(){
 
 	var SocketIo = require('socket.io'),
 		http = require('http'),
-		walker = require('../node_utils/dirWalker'),
-		watchFile = require('../node_utils/utils').watchFile,
+		walker = require('./node_utils/dirWalker'),
+		watchFile = require('./node_utils/fileWatcher').watch,
 		REFRESH_LAG = parseInt(require('./initConfig').lag, 10) || 2000,
 		PORT=require('./initConfig').port;
 

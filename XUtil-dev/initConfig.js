@@ -1,5 +1,5 @@
 var Path = require('path'),
-	config = require('../config'),
+	config = require('./config'),
 	renderedConfig = {};
 
 var root = Path.dirname(process.cwd());
@@ -15,5 +15,6 @@ for (i = 0; i < srcPaths.length; i++) {
 }
 
 renderedConfig.targetPaths = targetPaths;
+renderedConfig.lag = config.lag;
 
 module.exports = renderedConfig;
