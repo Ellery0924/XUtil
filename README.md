@@ -1,2 +1,2 @@
 # XUtil
-A JavaScript library for practice and demonstrate my FE skills;
+我的小类库，包括一些的UI组件和工具函数
