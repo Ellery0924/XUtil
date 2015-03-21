@@ -10,7 +10,7 @@ $(function(){
 			autoOpen:false,
 			closable:true,
 			title:'测试对话框',
-			top:'50%',
+			top:0.5,
 			draggable:true,
 			animated:true,
 			content:"<div style='padding:0.5em;'>hello there!</div>"

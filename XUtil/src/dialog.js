@@ -16,12 +16,13 @@
  */
 
 XUtil.XDialog = function (option) {
-	var log = XUtil.helpers.log;
+	var helpers = XUtil.helpers;
+	var log = helpers.log;
 
 	var width = option.width || 'auto',
 		height = option.height || 'auto',
-		top = option.top || '50%',
-		left = option.left || '50%',
+		top = option.top || 0.5,
+		left = option.left || 0.5,
 		closable = option.closable || false,
 		onClose = $.isFunction(option.onClose) ? option.onClose : function () {
 			log('XDialog: XDialog is closed.');
@@ -30,13 +31,15 @@ XUtil.XDialog = function (option) {
 			log('XDialog: XDialog is opened.');
 		},
 		autoOpen = false,
-		id = option.id || 'XDialog-' + XUtil.helpers.guid(),
+		id = option.id || 'XDialog-' + helpers.guid(),
 		className = option.className || '',
 		title = option.title || 'XDialog',
 		zIndex = option.zIndex || 1000,
 		draggable = option.draggable || false,
 		animated = option.animated || false,
 		content = option.content || '';
+
+	var initialOpen = true;
 
 	var offsetWidth,
 		offsetHeight;
@@ -60,12 +63,12 @@ XUtil.XDialog = function (option) {
 	}
 
 	domNode = $("<div class='XDialog' id='" + id + "'>" +
-		"<div class='XDialogTitle'>" +
-		"<span class='titleText'></span>" +
-		"<span class='closeBtn'></span>" +
-		"</div>" +
-		"<div class='XDialogContent'></div>" +
-		"</div>")[0];
+	"<div class='XDialogTitle'>" +
+	"<span class='titleText'></span>" +
+	"<span class='closeBtn'></span>" +
+	"</div>" +
+	"<div class='XDialogContent'></div>" +
+	"</div>")[0];
 
 	contentNode = $(domNode).find('.XDialogContent')[0];
 
@@ -73,7 +76,9 @@ XUtil.XDialog = function (option) {
 
 	titleBar = $(domNode).find('.titleText')[0];
 
-	$(document.body).append(domNode);
+	$(document.body)
+		.append(domNode)
+		.css('position', 'relative');
 
 	$(closeBtn).click(function (event) {
 		event.stopPropagation();
@@ -85,6 +90,8 @@ XUtil.XDialog = function (option) {
 	that.closeBtn = closeBtn;
 
 	that.init = function () {
+
+
 		$(domNode).css('position', 'fixed')
 			.css('top', top)
 			.css('left', left)
@@ -116,12 +123,12 @@ XUtil.XDialog = function (option) {
 			$(domNode).find('.closeBtn').show();
 		}
 
+		//拖拽功能
 		if (draggable) {
 
 			$(titleBar).css('cursor', 'move');
 
-			$(titleBar).off('mousedown');
-			$(titleBar).on('mousedown', function (e) {
+			$(titleBar).on('mousedown.' + id, function (e) {
 				if (e.which === 1) {
 					dragStart = true;
 					prevX = e.pageX;
@@ -129,8 +136,7 @@ XUtil.XDialog = function (option) {
 				}
 			});
 
-			$(document).off('mousemove.XDialogDrag');
-			$(document).on('mousemove.XDialogDrag', function (e) {
+			$(document).on('mousemove.' + id, function (e) {
 				var currentX, currentY, deltaX, deltaY;
 				if (dragStart) {
 					titleBar.onselectstart = function () {
@@ -152,8 +158,7 @@ XUtil.XDialog = function (option) {
 				}
 			});
 
-			$(document).off('mouseup.XDialogDrag');
-			$(document).on('mouseup.XDialogDrag', function () {
+			$(document).on('mouseup.' + id, function () {
 				dragStart = false;
 				titleBar.onselectstart = function () {
 					return true;
@@ -188,16 +193,21 @@ XUtil.XDialog = function (option) {
 
 			animated ? $(domNode).fadeIn('fast') : $(domNode).show();
 			opened = true;
-			shield = XUtil.helpers.addShield(document.body, 0.5, zIndex - 1);
+			shield = helpers.addShield(document.body, 0.5, zIndex - 1);
 			onOpen();
 
-			top = $(domNode).offset().top;
-			left = $(domNode).offset().left;
+			if (initialOpen) {
 
-			$(domNode).css('top', top)
-				.css('left', left)
-				.css('margin-top', 0)
-				.css('margin-left', 0);
+				top = $(window).height() * top - $(domNode).outerHeight() / 2;
+				left = $(window).width() * left - $(domNode).outerWidth() / 2;
+
+				$(domNode).css('top', top)
+					.css('left', left)
+					.css('margin-top', 0)
+					.css('margin-left', 0);
+
+				initialOpen = false;
+			}
 		}
 
 		return that;
@@ -208,7 +218,7 @@ XUtil.XDialog = function (option) {
 
 			animated ? $(domNode).fadeOut('fast') : $(domNode).hide();
 			opened = false;
-			XUtil.helpers.removeShield();
+			helpers.removeShield();
 			onClose();
 		}
 
