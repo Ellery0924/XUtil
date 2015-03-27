@@ -6,7 +6,7 @@ module.exports=function(){
 		walker = require('./node_utils/dirWalker'),
 		watchFile = require('./node_utils/fileWatcher').watch,
 		REFRESH_LAG = parseInt(require('./initConfig').lag, 10) || 2000,
-		PORT=require('./initConfig').port;
+		PORT=require('./initConfig').port || 45001;
 
 	var pid = process.pid;
 

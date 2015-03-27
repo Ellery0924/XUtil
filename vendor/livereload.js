@@ -1,5 +1,5 @@
 (function(){
-	var socket = io('http://127.0.0.1:45032/');
+	var socket = io('http://127.0.0.1:45001/');
 	
 	socket.on('message',function(msg){
 		console.log(msg);
