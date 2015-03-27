@@ -35,6 +35,19 @@ XUtil.config = {
 
 //工具函数集
 XUtil.helpers = {
+    //本库内部使用的控制台函数
+    log: function () {
+        var args = Array.prototype.slice.apply(arguments, []);
+        args.unshift('(XUtil) ');
+        console.log.apply(console, args);
+    },
+    //内部使用的异常工厂函数
+    error: function () {
+        if (arguments[0]) {
+            var newStr = '(XUtil) ' + arguments[0].toString();
+            return new Error(newStr);
+        }
+    },
     //为某个元素添加一层半透明遮罩，用来屏蔽该元素以及内部元素的响应事件
     //接收三个参数targetDiv(目标div), opacity(透明度)和zIndex(z-index的值)
     //返回遮罩元素
