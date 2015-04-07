@@ -81,7 +81,7 @@ XUtil.helpers = {
         if (!option) {
 
             arg['[' + bindAttr + ']'] = '';
-            this.bindInput.call(window, arg);
+            self.call(window, arg);
         }
         else if (typeof option === 'string') {
 
