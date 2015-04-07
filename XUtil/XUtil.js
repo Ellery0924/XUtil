@@ -64,6 +64,112 @@ XUtil.helpers = {
             return new Error(newStr);
         }
     },
+    //    为input和select绑定默认值
+    //    接受一个参数对象，格式如下：
+    //    {
+    //      'selector':value
+    //    }
+    // 其中selector是要绑定的dom元素的选择器
+    // value为要绑定的值
+    // 对于checkbox和radio，应设置为true/false(字符串)
+    //
+    // 如果不传参数则会检索页面中所有带data-bind属性的元素，并将data-bind的值设为默认值
+    //
+    // 在绑定之后会触发input和select的change事件
+    //
+    // 更新：
+    // 现在可以接受两个字符串作为参数，例如bind('input[type=text]','something')
+    // 将会查找页面内所有被selector选中的元素，然后将它们的默认值置为他们本身的data-bind属性
+    // 这样可以按顺序为一系列dom执行绑定，例如
+    // bind(ele1,str1);
+    // bind(ele2,str2);
+    // 在ele2的值依赖于ele1的取值时会有用，比如select2中的option依赖于select1的值来动态生成的情况
+    // 如果不传入第二个参数，则使用元素的data-bind属性作为默认值（如果存在）
+    //
+    // 如果第一个参数是对象
+    // 可以接受第二个参数attr，将data-bind属性改为其它属性名
+    bindInput: function (option, attr) {
+
+        var bindAttr = attr || 'data-bind',
+            arg = {},
+            self = XUtil.helpers.bindInput;
+
+        if (!option) {
+
+            arg['[' + bindAttr + ']'] = '';
+            this.bindInput.call(window, arg);
+        }
+        else if (typeof option === 'string') {
+
+            if (attr === undefined) {
+
+                arg = {};
+                arg[option] = '';
+
+                self.call(window, arg);
+            }
+            else {
+
+                arg = {};
+                arg[option] = attr;
+
+                self.call(window, arg);
+            }
+        }
+        else {
+
+            for (var selector in option) {
+
+                if (option.hasOwnProperty(selector)) {
+
+                    var ele = $(selector).eq(0),
+                        value = (option[selector] || ele.attr(bindAttr)).toString();
+
+                    var isTextInput = ele.is('input[type=text]'),
+                        isTextArea = ele.is('textarea'),
+                        isHiddenInput = ele.is('input[type=hidden]'),
+                        isCheckbox = ele.is('input[type=checkbox]'),
+                        isRadio = ele.is('input[type=radio]'),
+                        isSelect = ele.is('select');
+
+                    if (isTextInput || isTextArea || isHiddenInput) {
+
+                        ele.val(value);
+                        ele.trigger('change');
+                    }
+                    else if (isCheckbox || isRadio) {
+
+                        if (value === 'true') {
+
+                            ele.prop('checked', true);
+                            ele.trigger('change');
+                        }
+                        else if (value === 'false') {
+
+                            ele.prop('checked', false);
+                            ele.trigger('change');
+                        }
+                    }
+                    else if (isSelect) {
+
+                        var opts = ele[0].options;
+
+                        for (var i = 0; i < opts.length; i++) {
+
+                            var opt = opts[i];
+
+                            if (opt.value === value) {
+
+                                ele[0].selectedIndex = i;
+                                ele.trigger('change');
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     //为某个元素添加一层半透明遮罩，用来屏蔽该元素以及内部元素的响应事件
     //接收三个参数targetDiv(目标div), opacity(透明度)和zIndex(z-index的值)
     //返回遮罩元素
