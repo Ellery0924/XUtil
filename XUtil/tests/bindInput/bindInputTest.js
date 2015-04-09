@@ -6,5 +6,8 @@ $(function(){
 
     var bind=XUtil.helpers.bindInput;
 
-    bind('input[type=text]','hahaha');
+    bind('#test1','hahaha');
+    bind('#test2');
+
+    bind('[name=radioTest]');
 });

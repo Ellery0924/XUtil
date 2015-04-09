@@ -91,13 +91,14 @@ XUtil.helpers = {
     bindInput: function (option, attr) {
 
         var bindAttr = attr || 'data-bind',
-            arg = {},
-            self = XUtil.helpers.bindInput;
+            bind = XUtil.helpers.bindInput;
+
+        var arg = {};
 
         if (!option) {
 
             arg['[' + bindAttr + ']'] = '';
-            self.call(window, arg);
+            bind.call(window, arg);
         }
         else if (typeof option === 'string') {
 
@@ -106,14 +107,14 @@ XUtil.helpers = {
                 arg = {};
                 arg[option] = '';
 
-                self.call(window, arg);
+                bind.call(window, arg);
             }
             else {
 
                 arg = {};
                 arg[option] = attr;
 
-                self.call(window, arg);
+                bind.call(window, arg);
             }
         }
         else {
@@ -122,47 +123,53 @@ XUtil.helpers = {
 
                 if (option.hasOwnProperty(selector)) {
 
-                    var ele = $(selector).eq(0),
-                        value = (option[selector] || ele.attr(bindAttr)).toString();
+                    var eleArr = $(selector);
+                    console.log(eleArr, bindAttr);
 
-                    var isTextInput = ele.is('input[type=text]'),
-                        isTextArea = ele.is('textarea'),
-                        isHiddenInput = ele.is('input[type=hidden]'),
-                        isCheckbox = ele.is('input[type=checkbox]'),
-                        isRadio = ele.is('input[type=radio]'),
-                        isSelect = ele.is('select');
+                    for (var i = 0; i < eleArr.length; i++) {
 
-                    if (isTextInput || isTextArea || isHiddenInput) {
+                        var ele = $(selector).eq(i),
+                            value = (option[selector] || (ele.attr(bindAttr) ? ele.attr(bindAttr) : '')).toString();
 
-                        ele.val(value);
-                        ele.trigger('change');
-                    }
-                    else if (isCheckbox || isRadio) {
+                        var isTextInput = ele.is('input[type=text]'),
+                            isTextArea = ele.is('textarea'),
+                            isHiddenInput = ele.is('input[type=hidden]'),
+                            isCheckbox = ele.is('input[type=checkbox]'),
+                            isRadio = ele.is('input[type=radio]'),
+                            isSelect = ele.is('select');
 
-                        if (value === 'true') {
+                        if (isTextInput || isTextArea || isHiddenInput) {
 
-                            ele.prop('checked', true);
+                            ele.val(value);
                             ele.trigger('change');
                         }
-                        else if (value === 'false') {
+                        else if (isCheckbox || isRadio) {
 
-                            ele.prop('checked', false);
-                            ele.trigger('change');
-                        }
-                    }
-                    else if (isSelect) {
+                            if (value === 'true') {
 
-                        var opts = ele[0].options;
-
-                        for (var i = 0; i < opts.length; i++) {
-
-                            var opt = opts[i];
-
-                            if (opt.value === value) {
-
-                                ele[0].selectedIndex = i;
+                                ele.prop('checked', true);
                                 ele.trigger('change');
-                                break;
+                            }
+                            else if (value === 'false') {
+
+                                ele.prop('checked', false);
+                                ele.trigger('change');
+                            }
+                        }
+                        else if (isSelect) {
+
+                            var opts = ele[0].options;
+
+                            for (var j = 0; j < opts.length; j++) {
+
+                                var opt = opts[j];
+
+                                if (opt.value === value) {
+
+                                    ele[0].selectedIndex = j;
+                                    ele.trigger('change');
+                                    break;
+                                }
                             }
                         }
                     }
