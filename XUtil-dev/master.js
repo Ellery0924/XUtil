@@ -4,27 +4,26 @@
  */
 
 var initService = require('./server'),
-	watch = require('./node_utils/fileWatcher').watchWithEmitter,
-	cluster = require('cluster');
+    watch = require('./node_utils/fileWatcher').watchWithEmitter,
+    cluster = require('cluster');
 
 if (cluster.isMaster) {
-	var appWorker = cluster.fork();
+    var appWorker = cluster.fork();
 
-	cluster.on('restart', function () {
-		appWorker.kill();
-		appWorker = cluster.fork();
-	});
+    cluster.on('restart', function () {
+        appWorker.kill();
+        appWorker = cluster.fork();
+    });
 
-	watch('./server.js', './config.json', './initConfig.js','restart',cluster);
+    watch('./server.js', './config.json', './initConfig.js', 'restart', cluster);
 
-	process.on('SIGINT', function () {
-		console.log('Shutting down server...');
-		appWorker.kill();
-		process.exit(130);
-	});
-
+    process.on('SIGINT', function () {
+        console.log('Shutting down server...');
+        appWorker.kill();
+        process.exit(130);
+    });
 }
 else {
-	initService();
+    initService();
 }
 
