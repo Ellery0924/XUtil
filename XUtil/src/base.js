@@ -108,7 +108,6 @@ XUtil.helpers = {
                 if (option.hasOwnProperty(selector)) {
 
                     var eleArr = $(selector);
-                    console.log(eleArr, bindAttr);
 
                     for (var i = 0; i < eleArr.length; i++) {
 
