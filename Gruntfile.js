@@ -191,5 +191,5 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['hint', 'clean', 'widgets', 'build']);
 
     //使用requirejs插件打包示例工程，生成example.min.js
-    grunt.registerTask('demopkg', ['jshint:demoHint', 'requirejs:main']);
+    //grunt.registerTask('demopkg', ['jshint:demoHint', 'requirejs:main']);
 };
