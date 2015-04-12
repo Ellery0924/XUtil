@@ -1,10 +1,9 @@
 {
-  "name": "myUtilDemo",
+  "name": "XUtil",
   "version": "0.1.0",
-  "description": "myUtilDemo",
+  "description": "XUtil",
   "license": "MIT",
   "devDependencies": {
-    "gm": "^1.17.0",
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.3.0",

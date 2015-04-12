@@ -170,6 +170,7 @@ XUtil.XDialog = function (option) {
 	};
 
 	that.set = function (attrs) {
+
 		('width' in attrs) && (width = attrs.width);
 		('height' in attrs) && (height = attrs.height);
 		('top' in attrs) && (top = attrs.top);
@@ -189,6 +190,7 @@ XUtil.XDialog = function (option) {
 	};
 
 	that.open = function () {
+
 		if (!opened) {
 
 			animated ? $(domNode).fadeIn('fast') : $(domNode).show();

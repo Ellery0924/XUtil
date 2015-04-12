@@ -124,7 +124,6 @@ XUtil.helpers = {
                 if (option.hasOwnProperty(selector)) {
 
                     var eleArr = $(selector);
-                    console.log(eleArr, bindAttr);
 
                     for (var i = 0; i < eleArr.length; i++) {
 
@@ -200,6 +199,7 @@ XUtil.helpers = {
         }
 
         if (!$.isNumeric(opacity)) {
+
             opacity = 0.3;
         }
 
@@ -221,12 +221,8 @@ XUtil.helpers = {
     //清除遮罩
     //接收遮罩元素作为参数，如果无参数则清除页面中的所有遮罩
     removeShield: function (shield) {
-        if (!shield) {
-            $('.XUtil-pageShield').remove();
-        }
-        else {
-            $(shield).remove();
-        }
+
+        shield ? $('.XUtil-pageShield').remove() : $(shield).remove();
     },
 
     //一个异常处理工具函数，
@@ -241,9 +237,11 @@ XUtil.helpers = {
             errorHint = $("<span class='errorHint'>* " + msg + "</span>");
 
         if (parent.find('.errorHint').length === 0) {
+
             errorHint.insertAfter(element);
         }
         if (className) {
+
             errorHint.addClass(className);
         }
 
@@ -254,11 +252,13 @@ XUtil.helpers = {
     //接收一个参数element,清除加在指定元素上的提示
     //如果不传参数则清除页面上的所有错误提示
     clearErrorHint: function (element) {
+
         element ? $($(element).parent()).find('.errorHint').remove() : $('.errorHint').remove();
     },
 
     //解析url后返回一个url参数对象的工具函数
     getUrlArgs: function () {
+
         var args = {},
             location = window.location || location;
         var query = location.search.substring(1);
@@ -266,6 +266,7 @@ XUtil.helpers = {
         var i, pos, name, value;
 
         for (i = 0; i < pairs.length; i++) {
+
             pos = pairs[i].indexOf('=');
             if (pos === -1) continue;
             name = pairs[i].substring(0, pos);
@@ -276,10 +277,13 @@ XUtil.helpers = {
     },
 
     toQuery: function (obj) {
+
         var query = '?';
 
         for (var name in obj) {
+
             if (obj.hasOwnProperty(name)) {
+
                 query += name + '=' + obj[name] + '&';
             }
         }
@@ -288,6 +292,7 @@ XUtil.helpers = {
     },
 
     getUrl: function (url, args) {
+
         var self = helpers;
         return encodeURI(url + self.toQuery(args));
     },
@@ -295,7 +300,9 @@ XUtil.helpers = {
     //guid生成工具
     //Author: Robert Kieffer
     guid: function () {
+
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0 & 3 | 0x8);
             return v.toString(16);
         }).toUpperCase();
@@ -701,6 +708,7 @@ XUtil.XDialog = function (option) {
 	};
 
 	that.set = function (attrs) {
+
 		('width' in attrs) && (width = attrs.width);
 		('height' in attrs) && (height = attrs.height);
 		('top' in attrs) && (top = attrs.top);
@@ -720,6 +728,7 @@ XUtil.XDialog = function (option) {
 	};
 
 	that.open = function () {
+
 		if (!opened) {
 
 			animated ? $(domNode).fadeIn('fast') : $(domNode).show();
