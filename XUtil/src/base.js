@@ -166,7 +166,7 @@ XUtil.helpers = {
     //返回遮罩元素
     addShield: function (targetDiv, opacity, zIndex) {
         var top, left, width, height;
-        var targetZIndex = zIndex || 1;
+        var targetZIndex = zIndex || 10000;
         var shield;
 
         !targetDiv && (targetDiv = document.body);
@@ -176,6 +176,12 @@ XUtil.helpers = {
         left = targetDiv.offset().left;
         width = targetDiv.outerWidth();
         height = targetDiv.outerHeight();
+
+        if (targetDiv[0] === document.body) {
+
+            width = "100%";
+            height = "100%";
+        }
 
         if (!$.isNumeric(opacity)) {
             opacity = 0.3;
