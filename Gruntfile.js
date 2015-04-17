@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-    var walker = require('./node_utils/dirWalker'),
+    var walker = require('./XUtil-dev/node_utils/dirwalker'),
         fs = require('fs');
 
     var XUtilRoot = process.cwd() + '/XUtil';
@@ -16,23 +16,6 @@ module.exports = function (grunt) {
 
     //配置任务参数
     grunt.initConfig({
-        //使用requirejs插件打包
-        //requirejs: {
-        //	main: {
-        //		options: {
-        //			//这里的baseUrl和require.config中的略有不同
-        //			//应该根据根目录的路径稍作修改
-        //			baseUrl: 'WebContent/',
-        //			//指定require.config文件路径
-        //			mainConfigFile:'WebContent/js/example.js',
-        //			//这里只加入了主文件，插件会自动计算依赖关系，并根据上面的config文件来打包代码
-        //			include: ['js/example'],
-        //			//打包后的文件
-        //			out: 'WebContent/js/example.min.js'
-        //		}
-        //	}
-        //},
-        //jshint
         jshint: {
             options: {
                 globals: {
@@ -50,9 +33,6 @@ module.exports = function (grunt) {
             XUtilHint: {
                 src: ['<%=XUtilPath%>/src/*.js']
             }
-            //demoHint:{
-            //	src:['WebContent/js/*.js','!WebContent/js/example.min.js']
-            //}
         },
         clean: {
             all: {
@@ -64,7 +44,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        //不使用requirejs的项目打包
         //合并js文件
         concat: {
             XUtilConcat: {
@@ -170,6 +149,7 @@ module.exports = function (grunt) {
                 grunt.log.writeln('XUtil: Widget ' + fName + ' created.');
                 count++;
             }
+            //单独构建一个base.js
             else if (fName === 'base.js') {
 
                 destPath = root + 'widgets/base.js';
@@ -189,7 +169,4 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', ['hint', 'clean', 'widgets', 'build']);
-
-    //使用requirejs插件打包示例工程，生成example.min.js
-    //grunt.registerTask('demopkg', ['jshint:demoHint', 'requirejs:main']);
 };

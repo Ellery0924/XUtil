@@ -240,6 +240,7 @@ XUtil.helpers = {
 
             errorHint.insertAfter(element);
         }
+
         if (className) {
 
             errorHint.addClass(className);
@@ -311,6 +312,7 @@ XUtil.helpers = {
     //预加载图片方法
     //可接收不定数量的参数，参数为图片的url
     preloadImages: function () {
+
         var i;
         for (i = 0; i < arguments.length; i++) {
             (new Image()).src = arguments[i].toString();
