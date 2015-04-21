@@ -9,4 +9,5 @@ $(function () {
     bind('#test2');
 
     bind('[name=radioTest]');
+    bind('#vTest3',1235);
 });

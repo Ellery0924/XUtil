@@ -157,19 +157,8 @@ XUtil.helpers = {
                         }
                         else if (isSelect) {
 
-                            var opts = ele[0].options;
-
-                            for (var j = 0; j < opts.length; j++) {
-
-                                var opt = opts[j];
-
-                                if (opt.value === value) {
-
-                                    ele[0].selectedIndex = j;
-                                    ele.trigger('change');
-                                    break;
-                                }
-                            }
+                            ele.val(value);
+                            ele.trigger('change');
                         }
                     }
                 }
