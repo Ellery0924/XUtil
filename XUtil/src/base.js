@@ -121,7 +121,7 @@ XUtil.helpers = {
                             isRadio = ele.is('input[type=radio]'),
                             isSelect = ele.is('select');
 
-                        if (isTextInput || isTextArea || isHiddenInput) {
+                        if (isTextInput || isTextArea || isHiddenInput || isSelect) {
 
                             ele.val(value);
                             ele.trigger('change');
@@ -138,11 +138,6 @@ XUtil.helpers = {
                                 ele.prop('checked', false);
                                 ele.trigger('change');
                             }
-                        }
-                        else if (isSelect) {
-
-                            ele.val(value);
-                            ele.trigger('change');
                         }
                     }
                 }
