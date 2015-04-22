@@ -21,5 +21,7 @@ $(function () {
     });
 
     loader.config({isSync:false});
-    loader.load(['testFiles/js1.js','testFiles/js2.js']);
+    loader.load(['testFiles/js1.js','testFiles/js2.js'],function(){
+        console.log(a,b);
+    });
 });
