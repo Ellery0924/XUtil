@@ -1,7 +1,9 @@
 /*
-* 文件加载器，支持加载js和css文件
-* 其中js有异步和同步两种模式
-* */
+ * 脚本/css文件加载器，支持加载js和css文件并解析
+ * 其中js有异步和同步两种模式
+ * 接受一个数组作为参数，如果数组中的元素是对象，则会根据对象的path属性加载文件，并且将对象其他的属性设为script/link标签的html属性
+ * 如果是一个字符串，则只加载文件
+ * */
 XUtil.loader = {
     option: {
         root: "",
@@ -24,11 +26,11 @@ XUtil.loader = {
         //需要加载的文件数组，为第一个参数
         var files,
             arg = arguments[0],
-            //异步加载完成后执行的回调
+        //异步加载完成后执行的回调
             callback = arguments[1] || function () {
-                    console.log('all loaded');
+                    console && console.log('all loaded');
                 },
-            //文件根路径
+        //文件根路径，将结尾可能存在的/替换为""，然后再加上/以确保格式正确，如果没有设置根路径则设为空字符串
             root = this.option.root ? this.option.root.replace(/\/$/, '') + "/" : "";
 
         //判断是否为js文件的正则表达式
@@ -55,6 +57,9 @@ XUtil.loader = {
             var script, src, xhrSync, scriptText,
                 link, href, rel;
 
+            //不能够设置的属性
+            var rinvalidAttr = /^(src|href|type|path|rel)$/;
+
             var head = document.head;
 
             if (rjs.test(file.path)) {
@@ -73,12 +78,17 @@ XUtil.loader = {
 
                     if (xhrSync.status !== 200) {
 
-                        throw new Error(request.statusText);
+                        throw new Error(xhrSync.statusText);
                     }
 
                     scriptText = xhrSync.responseText;
+
                     //不光要确保同步下载，还要确保同步解析，因此使用了eval来手动解析js代码
-                    eval(scriptText);
+                    //如果使用了jshint来校验，需要手动设置忽略eval规则，否则会报错
+                    //copy了jQuery.globalEval的实现，确保在全局作用域下执行
+                    (window.execScript || function (scriptText) {
+                        window['eval'].call(window, scriptText);
+                    })(scriptText);
 
                     head.appendChild(script);
 
@@ -87,7 +97,7 @@ XUtil.loader = {
                     script.text = scriptText;
 
                     //将type重置为text/javascript，不会重复执行代码
-                    //由于谷歌浏览器在修改src时依然会执行js代码，因此先设置src，后更改type
+                    //由于谷歌浏览器在修改script标签的src属性时依然会执行js代码，因此先设置src，后更改type
                     script.src = src;
                     script.type = "text/javascript";
                 }
@@ -98,29 +108,34 @@ XUtil.loader = {
                     script.src = src;
                     count++;
 
-                    script.onload = function () {
+                    script.onload = script.onreadystatechange = function () {
 
                         if (!lock) {
-                            //每一个js完成解析后会将计数器减1
-                            //当计数器为0时触发loaded回调，并且将锁置为true
-                            if (--count === 0) {
-                                lock = true;
-                                callback();
+
+                            if (!this.readyState || this.readyState == "loaded" || this.readyState == "complete") {
+
+                                //每一个js完成解析后会将计数器减1
+                                //当计数器为0时触发loaded回调，并且将锁置为true
+                                if (--count === 0) {
+                                    lock = true;
+                                    callback();
+                                }
                             }
                         }
                     };
 
-                    for (var attrJs in file) {
-
-                        if (file.hasOwnProperty(attrJs) && attrJs !== 'path') {
-
-                            script.setAttribute(attrJs, file[attrJs]);
-                        }
-                    }
-
                     head.appendChild(script);
                 }
+
+                for (var attrJs in file) {
+
+                    if (file.hasOwnProperty(attrJs) && !rinvalidAttr.test(attrJs)) {
+
+                        script.setAttribute(attrJs, file[attrJs]);
+                    }
+                }
             }
+            //加载css文件，只支持异步加载
             else {
 
                 link = document.createElement('link');
@@ -132,7 +147,7 @@ XUtil.loader = {
 
                 for (var attrCss in file) {
 
-                    if (file.hasOwnProperty(attrCss) && attrCss !== 'path') {
+                    if (file.hasOwnProperty(attrCss) && !rinvalidAttr.test(attrCss)) {
 
                         link.setAttribute(attrCss, file[attrCss]);
                     }
@@ -142,6 +157,11 @@ XUtil.loader = {
             }
         }
 
-        console.log('all done!');
+        console && console.log('all done!');
+
+        if (this.option.isSync) {
+
+            callback();
+        }
     }
 };
