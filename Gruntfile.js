@@ -28,7 +28,8 @@ module.exports = function (grunt) {
                 '-W065': true,//missed radix parameter, 例如parseInt(num,decimal)
                 '-W030': true,//&& and || 例如 window.foo && foo()
                 '-W014': true,//超过80字符的行
-                '-W099': true//tab和空格问题
+                '-W099': true,//tab和空格问题
+                '-W061': true//允许eval
             },
             XUtilHint: {
                 src: ['<%=XUtilPath%>/src/*.js']
