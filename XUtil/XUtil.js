@@ -876,7 +876,7 @@ XUtil.loader = (function () {
             //判断是否为绝对路径或者以http://开头的url
             //如果是以上两种情况，忽略root而直接使用传入的绝对路径
             //如果不是，则在所有传入的路径前加上root
-            isAbsoluteUrl = /^(?:http:\/\/|\/)/.test(file.path);
+            isAbsoluteUrl = /^(?:\s*http:\/\/|\/)/.test(file.path);
 
             var script, src, xhrSync, scriptText,
                 link, href, rel;
