@@ -4,14 +4,14 @@
  * 接受一个数组作为参数，如果数组中的元素是对象，则会根据对象的path属性加载文件，并且将对象其他的属性设为script/link标签的html属性
  * 如果是一个字符串，则只加载文件
  * */
-XUtil.loader = {
-    option: {
+XUtil.loader = (function () {
+
+    var option = {
         root: "",
         isSync: true
-    },
-    config: function (opt) {
+    };
 
-        var option = this.option;
+    var config = function (opt) {
 
         for (var key in opt) {
 
@@ -20,18 +20,19 @@ XUtil.loader = {
                 option[key] = opt[key];
             }
         }
-    },
-    load: function () {
+    };
+
+    var load = function () {
 
         //需要加载的文件数组，为第一个参数
         var files,
             arg = arguments[0],
-        //异步加载完成后执行的回调
+        //js脚本加载完成后执行的回调
             callback = arguments[1] || function () {
                     console && console.log('all loaded');
                 },
         //文件根路径，将结尾可能存在的/替换为""，然后再加上/以确保格式正确，如果没有设置根路径则设为空字符串
-            root = this.option.root ? this.option.root.replace(/\/$/, '') + "/" : "";
+            root = option.root ? option.root.replace(/\/$/, '') + "/" : "";
 
         //判断是否为js文件的正则表达式
         var rjs = /.js/;
@@ -70,7 +71,7 @@ XUtil.loader = {
                 //同步加载模式
                 //通过同步ajax请求获得script标签的内容，然后用eval执行
                 //之后插入script标签，并且通过一些很奇怪的方法阻止浏览器自动解析新插入的script标签
-                if (this.option.isSync) {
+                if (option.isSync) {
 
                     xhrSync = new XMLHttpRequest();
                     xhrSync.open("GET", src, false);
@@ -117,6 +118,7 @@ XUtil.loader = {
                                 //每一个js完成解析后会将计数器减1
                                 //当计数器为0时触发loaded回调，并且将锁置为true
                                 if (--count === 0) {
+
                                     lock = true;
                                     callback();
                                 }
@@ -131,7 +133,7 @@ XUtil.loader = {
 
                     if (file.hasOwnProperty(attrJs) && !rinvalidAttr.test(attrJs)) {
 
-                        script.setAttribute(attrJs, file[attrJs]);
+                        script.setAttribute(attrJs, attrJs === 'data-main' ? root + file[attrJs] : file[attrJs]);
                     }
                 }
             }
@@ -159,9 +161,14 @@ XUtil.loader = {
 
         console && console.log('all done!');
 
-        if (this.option.isSync) {
+        if (option.isSync) {
 
             callback();
         }
-    }
-};
+    };
+
+    return {
+        config: config,
+        load: load
+    };
+})();
