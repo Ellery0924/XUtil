@@ -8,6 +8,7 @@
 	}
 	// 对全局变量的支持
 	else {
+
 		factory(jQuery);
 	}
 })(function($) {
