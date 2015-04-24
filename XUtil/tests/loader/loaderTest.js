@@ -3,10 +3,11 @@
  */
 
 
-var loader = XUtil.loader;
+var loader = XUtil.loader,
+    mod="async noteval";
 
 loader.config({
-    mod: 'async noteval',
+    mod: mod,
     root: "http://localhost:63342/XUtil/XUtil/tests/loader/"
 });
 
@@ -24,14 +25,23 @@ loader.load([
     'testFiles/css2.css'
 ], function (scripts) {
 
-    console.log(scripts);
+    if(mod==='async noteval') {
 
-    console.log('is jquery undefined? '+(window.$ === undefined));
+        console.log(scripts);
 
-    for (var i = 0; i < scripts.length; i++) {
+        console.log('is jquery defined? ' + (window.$ !== undefined));
 
-        loader.globalEval(scripts[i]);
+        for (var i = 0; i < scripts.length; i++) {
+
+            loader.globalEval(scripts[i]);
+        }
+
+        console.log('is jquery defined? ' + (window.$ !== undefined));
+
+        console.log(window.$, window.$().dialog, a, b);
     }
+    else if(mod==='sync'){
 
-    console.log(window.$, window.$().dialog, a, b);
+        console.log(scripts);
+    }
 });

@@ -28,12 +28,4 @@ $(function () {
     //console.log($.event.special)
     //
     //console.log($._data(pubsub,'events'));
-
-    var script=document.createElement('script');
-
-    document.head.appendChild(script);
-    script.type='text';
-
-    script.src='http://sjs2.sinajs.cn/video/volunteer/js/core/core.js?ver=0.0';
-    script.type='text/javascript';
 });
