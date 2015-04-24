@@ -52,12 +52,14 @@ XUtil.config = {
 
 //工具函数集
 XUtil.helpers = {
+
     //本库内部使用的控制台函数
     log: function () {
         var args = Array.prototype.slice.apply(arguments, []);
         args.unshift('(XUtil) ');
         console.log.apply(console, args);
     },
+
     //内部使用的异常工厂函数
     error: function () {
         if (arguments[0]) {
@@ -65,6 +67,23 @@ XUtil.helpers = {
             return new Error(newStr);
         }
     },
+
+    //修正不支持console的浏览器
+    shimConsole: function () {
+
+        var noop = function () {
+        };
+
+        if (!window.console) {
+
+            window.console = {
+                log: noop,
+                error: noop,
+                warn: noop
+            };
+        }
+    },
+
     //    为input和select绑定默认值
     //    接受一个参数对象，格式如下：
     //    {

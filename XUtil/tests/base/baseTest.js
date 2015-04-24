@@ -10,4 +10,10 @@ $(function () {
 
     bind('[name=radioTest]');
     bind('#vTest3',1235);
+
+    console=undefined;
+
+    XUtil.helpers.shimConsole();
+
+    console.log('failed!');
 });
