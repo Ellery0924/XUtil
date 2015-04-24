@@ -24,12 +24,14 @@ loader.load([
     'testFiles/css2.css'
 ], function (scripts) {
 
-    console.log(window.$);
+    console.log(scripts);
+
+    console.log('is jquery undefined? '+(window.$ === undefined));
 
     for (var i = 0; i < scripts.length; i++) {
 
         loader.globalEval(scripts[i]);
     }
 
-    console.log(window.$);
+    console.log(window.$, window.$().dialog, a, b);
 });
