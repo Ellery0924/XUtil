@@ -11,9 +11,29 @@ $(function () {
     bind('[name=radioTest]');
     bind('#vTest3',1235);
 
-    console=undefined;
+    //console=undefined;
 
-    XUtil.helpers.shimConsole();
+    //XUtil.helpers.shimConsole();
 
-    console.log('failed!');
+    //console.log('failed!');
+    //
+    //var pubsub={},
+    //    $pubsub=$(pubsub);
+    //
+    //$pubsub.on('ready',function(){
+    //    console.log('test triggered');
+    //})
+    //    .trigger('ready');
+    //
+    //console.log($.event.special)
+    //
+    //console.log($._data(pubsub,'events'));
+
+    var script=document.createElement('script');
+
+    document.head.appendChild(script);
+    script.type='text';
+
+    script.src='http://sjs2.sinajs.cn/video/volunteer/js/core/core.js?ver=0.0';
+    script.type='text/javascript';
 });

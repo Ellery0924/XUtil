@@ -66,7 +66,7 @@ XUtil.loader = (function () {
         var files = arguments[0], file,
         //js脚本加载完成后执行的回调
             callback = arguments[1] || function () {
-                    console && console.log('all loaded');
+                    console.log('all loaded');
                 },
         //文件根路径，将结尾可能存在的/替换为""，然后再加上/以确保格式正确，如果没有设置根路径则设为空字符串
             root = option.root ? option.root.replace(rlastSlash, '') + "/" : "";
@@ -81,13 +81,13 @@ XUtil.loader = (function () {
 
             head.appendChild(script);
 
-            //制止浏览器自动执行script标签中的js代码，所以临时将type设为text
+            //制止浏览器自动执行script标签中的js代码，所以临时将type设为text之后插入文本
             script.type = "text";
             script.text = scriptText;
 
             //由于谷歌浏览器在修改script标签的src属性时依然会执行js代码，因此先设置src，后更改type
             script.src = src;
-            //将type重置为text/javascript，不会执行代码
+            //将type重置为text/javascript，不会执行其中的代码，在ff和chrome下测试通过
             script.type = "text/javascript";
         };
 
@@ -188,6 +188,7 @@ XUtil.loader = (function () {
                         count++;
 
                         xhr = new XMLHttpRequest();
+                        //这里给xhr设置src和file是为了消除闭包导致的引用问题
                         xhr.src = src;
                         xhr.file = file;
                         xhr.open("GET", src);
@@ -202,7 +203,6 @@ XUtil.loader = (function () {
 
                                 //向head插入一个script标签但制止浏览器自动解析脚本
                                 var script = document.createElement('script');
-                                head.appendChild(script);
                                 insertScriptNotEval(script, this.src, this.responseText);
 
                                 //所有脚本下载完成后触发回调
@@ -233,7 +233,7 @@ XUtil.loader = (function () {
             }
         }
 
-        console && console.log('all done!');
+        console.log('all done!');
 
         if (option.mod === 'sync') {
 
