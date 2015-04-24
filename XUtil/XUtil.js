@@ -762,9 +762,11 @@ XUtil.XDialog = function (option) {
  * 一种JS类实现，借鉴了Spine.js中类的实现并做了一些小改动（加入了父类原型属性和父类init方法的引用以及guid）
  */
 XUtil.Class = function (parent) {
+
 	var sub;
 
 	function Class() {
+
 		this.init.apply(this, arguments);
 		Class.instances[XUtil.helpers.guid()] = this;
 	}
@@ -772,12 +774,15 @@ XUtil.Class = function (parent) {
 	Class.instances = {};
 
 	Class.find = function (id) {
+
 		if (id && Class.instances[id]) {
+
 			return Class.instances[id];
 		}
 	};
 
 	if (parent) {
+
 		sub = function () {
 		};
 		sub.prototype = parent.prototype;
@@ -823,12 +828,16 @@ XUtil.Class = function (parent) {
 };
 /*
  * 脚本/css文件加载器，支持加载js和css文件并解析
- * 其中js有异步和同步两种模式
- * 在异步模式下，可以设置脚本下载完成后不自动解析（特殊异步模式）
+ * 其中js有异步和同步两种模式，异步模式下有两种子模式：异步下载并解析，异步下载但不解析
+ * 三种模式的实现方式分别是：
+ * 同步：同步ajax请求获取脚本文本+全局eval，之后向document.head中插入script标签但阻止浏览器自动解析
+ * 异步解析：script标签
+ * 异步下载不解析：异步ajax请求获取脚本文本，之后向document.head中插入script标签但阻止浏览器自动解析（计划以此为基础实现CommonJS加载器）
+ *
  * 接受一个数组作为参数，如果数组中的元素是对象，则会根据对象的path属性加载文件，并且将对象其他的属性设为script/link标签的html属性
  * 如果是一个字符串，则只加载文件
  * 接受的第二个参数为结束回调，接受一个数组为参数，在同步和普通异步模式下，该数组保存的是添加到页面中的所有script标签
- * 在特殊异步模式下，该数组保存了所有下载的脚本的text
+ * 在异步下载但不解析模式下，该数组保存了所有下载的脚本的text
  * */
 XUtil.loader = (function () {
 
@@ -843,7 +852,7 @@ XUtil.loader = (function () {
 
         for (var key in opt) {
 
-            if (opt.hasOwnProperty(key)) {
+            if (opt.hasOwnProperty(key) && option.hasOwnProperty(key)) {
 
                 option[key] = opt[key];
             }
@@ -864,21 +873,6 @@ XUtil.loader = (function () {
     //加载css/js文件，实例方法
     var load = function () {
 
-        //工具函数，向document.head中插入一个script标签，但阻止浏览器自动解析其中的js代码
-        var insertScriptNotEval = function (script, src, scriptText) {
-
-            document.head.appendChild(script);
-
-            //制止浏览器自动执行script标签中的js代码，所以临时将type设为text
-            script.type = "text";
-            script.text = scriptText;
-
-            //由于谷歌浏览器在修改script标签的src属性时依然会执行js代码，因此先设置src，后更改type
-            script.src = src;
-            //将type重置为text/javascript，不会执行代码
-            script.type = "text/javascript";
-        };
-
         //获取加载模式
         var mod = option.mod,
         //同步模式
@@ -889,7 +883,7 @@ XUtil.loader = (function () {
             isAsyncNotEval = mod.search('async') !== -1 && mod.search('noteval') !== -1;
 
         //需要加载的文件数组，循环中对数组中每一个元素的引用，是否为绝对url
-        var files = arguments[0], file, isAbsoluteUrl,
+        var files = arguments[0], file,
         //js脚本加载完成后执行的回调
             callback = arguments[1] || function () {
                     console && console.log('all loaded');
@@ -901,6 +895,7 @@ XUtil.loader = (function () {
         var rjs = /.js/,
         //不能够设置的属性
             rinvalidAttr = /^(src|href|type|path|rel)$/,
+        //是否为绝对路径
             rabsoluteUrl = /^(?:\s*http:\/\/|\/)/;
 
         //计数器和锁，在异步加载模式下使用
@@ -908,6 +903,44 @@ XUtil.loader = (function () {
 
         var head = document.head;
 
+        //工具函数，向document.head中插入一个script标签，但阻止浏览器自动解析其中的js代码
+        var insertScriptNotEval = function (script, src, scriptText) {
+
+            head.appendChild(script);
+
+            //制止浏览器自动执行script标签中的js代码，所以临时将type设为text
+            script.type = "text";
+            script.text = scriptText;
+
+            //由于谷歌浏览器在修改script标签的src属性时依然会执行js代码，因此先设置src，后更改type
+            script.src = src;
+            //将type重置为text/javascript，不会执行代码
+            script.type = "text/javascript";
+        };
+
+        //判断是否为绝对路径或者以http://开头的url
+        //如果是以上两种情况，忽略root而直接使用传入的绝对路径
+        //如果不是，则在所有传入的路径前加上root
+        var modifyPath = function (path) {
+
+            var isAbsoluteUrl = rabsoluteUrl.test(path);
+
+            return isAbsoluteUrl ? path : root + path;
+        };
+
+        //工具函数，为script/link标签设置附加属性
+        var setAttr = function (file, script, isJs) {
+
+            for (var attr in file) {
+
+                if (file.hasOwnProperty(attr) && !rinvalidAttr.test(attr)) {
+
+                    script.setAttribute(attr, isJs && attr === 'data-main' ? modifyPath(file[attr]) : file[attr]);
+                }
+            }
+        };
+
+        //在循环中使用的变量
         var script, src, xhr, xhrSync, scriptText,
             link, href, rel;
 
@@ -918,14 +951,9 @@ XUtil.loader = (function () {
             //修正file对象
             file = typeof file === 'object' ? file : {path: file};
 
-            //判断是否为绝对路径或者以http://开头的url
-            //如果是以上两种情况，忽略root而直接使用传入的绝对路径
-            //如果不是，则在所有传入的路径前加上root
-            isAbsoluteUrl = rabsoluteUrl.test(file.path);
-
             if (rjs.test(file.path)) {
-                //根据isAbsoluteUrl修正script标签的src属性
-                src = isAbsoluteUrl ? file.path : root + file.path;
+                //修正script标签的src属性
+                src = modifyPath(file.path);
                 script = document.createElement('script');
 
                 //同步加载模式
@@ -950,6 +978,8 @@ XUtil.loader = (function () {
                     insertScriptNotEval(script, src, scriptText);
 
                     scripts.push(script);
+
+                    setAttr(file, script, true);
                 }
                 //异步加载
                 else {
@@ -965,7 +995,7 @@ XUtil.loader = (function () {
                             if (!this.readyState || this.readyState == "loaded" || this.readyState == "complete") {
 
                                 //每一个js完成解析后会将计数器减1
-                                //当计数器为0时触发loaded回调，并且将锁置为true
+                                //当计数器为0时触发结束回调
                                 if (--count === 0) {
 
                                     callback(scripts);
@@ -977,13 +1007,7 @@ XUtil.loader = (function () {
 
                         scripts.push(script);
 
-                        for (var attrJs in file) {
-
-                            if (file.hasOwnProperty(attrJs) && !rinvalidAttr.test(attrJs)) {
-
-                                script.setAttribute(attrJs, attrJs === 'data-main' ? root + file[attrJs] : file[attrJs]);
-                            }
-                        }
+                        setAttr(file, script, true);
                     }
                     //特殊模式，异步下载脚本但不解析
                     else if (isAsyncNotEval) {
@@ -992,6 +1016,7 @@ XUtil.loader = (function () {
 
                         xhr = new XMLHttpRequest();
                         xhr.src = src;
+                        xhr.file = file;
                         xhr.open("GET", src);
                         xhr.send();
 
@@ -1003,7 +1028,7 @@ XUtil.loader = (function () {
                                 scripts.push(this.responseText);
 
                                 //向head插入一个script标签但制止浏览器自动解析脚本
-                                script = document.createElement('script');
+                                var script = document.createElement('script');
                                 head.appendChild(script);
                                 insertScriptNotEval(script, this.src, this.responseText);
 
@@ -1012,6 +1037,8 @@ XUtil.loader = (function () {
 
                                     callback(scripts);
                                 }
+
+                                setAttr(this.file, script, true);
                             }
                         };
                     }
@@ -1021,19 +1048,13 @@ XUtil.loader = (function () {
             else {
 
                 link = document.createElement('link');
-                href = isAbsoluteUrl ? file.path : root + file.path;
+                href = modifyPath(file.path);
                 rel = file.rel || "stylesheet";
 
                 link.href = href;
                 link.rel = rel;
 
-                for (var attrCss in file) {
-
-                    if (file.hasOwnProperty(attrCss) && !rinvalidAttr.test(attrCss)) {
-
-                        link.setAttribute(attrCss, file[attrCss]);
-                    }
-                }
+                setAttr(file, link, false);
 
                 head.appendChild(link);
             }

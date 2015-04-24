@@ -3,9 +3,11 @@
  * 一种JS类实现，借鉴了Spine.js中类的实现并做了一些小改动（加入了父类原型属性和父类init方法的引用以及guid）
  */
 XUtil.Class = function (parent) {
+
 	var sub;
 
 	function Class() {
+
 		this.init.apply(this, arguments);
 		Class.instances[XUtil.helpers.guid()] = this;
 	}
@@ -13,12 +15,15 @@ XUtil.Class = function (parent) {
 	Class.instances = {};
 
 	Class.find = function (id) {
+
 		if (id && Class.instances[id]) {
+
 			return Class.instances[id];
 		}
 	};
 
 	if (parent) {
+
 		sub = function () {
 		};
 		sub.prototype = parent.prototype;
