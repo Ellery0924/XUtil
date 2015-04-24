@@ -911,7 +911,7 @@ XUtil.loader = (function () {
         //不能够设置的属性
             rinvalidAttr = /^\s*(src|href|type|path|rel)\s*$/,
         //是否为绝对路径
-            rabsoluteUrl = /^(http:\/\/|\/)/,
+            rabsoluteUrl = /^(?:http:\/\/|\/)/,
             rlastSlash = /\/$/;
 
         //需要加载的文件数组，循环中对数组中每一个元素的引用，是否为绝对url
@@ -992,7 +992,7 @@ XUtil.loader = (function () {
 
                     if (xhrSync.status !== 200) {
 
-                        throw new Error(xhrSync.statusText);
+                        throw new Error(src + ':' + xhrSync.status + ' ' + xhrSync.statusText);
                     }
 
                     scriptText = xhrSync.responseText;
@@ -1048,22 +1048,29 @@ XUtil.loader = (function () {
 
                             xhr.onreadystatechange = function () {
 
-                                if (this.readyState == 4 && this.status === 200) {
+                                if (this.readyState == 4) {
 
-                                    //将获取的脚本文本加入scripts数组
-                                    scripts.push(this.responseText);
+                                    if (this.status === 200) {
 
-                                    //向head插入一个script标签但制止浏览器自动解析脚本
-                                    var script = document.createElement('script');
-                                    insertScriptNotEval(script, this.src, this.responseText);
+                                        //将获取的脚本文本加入scripts数组
+                                        scripts.push(this.responseText);
 
-                                    //所有脚本下载完成后触发回调
-                                    if (--count === 0) {
+                                        //向head插入一个script标签但制止浏览器自动解析脚本
+                                        var script = document.createElement('script');
+                                        insertScriptNotEval(script, this.src, this.responseText);
 
-                                        callback(scripts);
+                                        //所有脚本下载完成后触发回调
+                                        if (--count === 0) {
+
+                                            callback(scripts);
+                                        }
+
+                                        setAttr(this.file, script, true);
                                     }
+                                    else {
 
-                                    setAttr(this.file, script, true);
+                                        throw new Error(this.src + ':' + this.status + ' ' + this.responseText);
+                                    }
                                 }
                             };
 
