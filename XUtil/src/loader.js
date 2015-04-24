@@ -54,6 +54,14 @@ XUtil.loader = (function () {
         //特殊异步模式，下载脚本但不解析
             isAsyncNotEval = mod.search('async') !== -1 && mod.search('noteval') !== -1;
 
+        //判断是否为js文件的正则表达式
+        var rjs = /.js/,
+        //不能够设置的属性
+            rinvalidAttr = /^\s*(src|href|type|path|rel)\s*$/,
+        //是否为绝对路径
+            rabsoluteUrl = /^\s*http:\/\/|\//,
+            rlastSlash = /\/$/;
+
         //需要加载的文件数组，循环中对数组中每一个元素的引用，是否为绝对url
         var files = arguments[0], file,
         //js脚本加载完成后执行的回调
@@ -61,14 +69,7 @@ XUtil.loader = (function () {
                     console && console.log('all loaded');
                 },
         //文件根路径，将结尾可能存在的/替换为""，然后再加上/以确保格式正确，如果没有设置根路径则设为空字符串
-            root = option.root ? option.root.replace(/\/$/, '') + "/" : "";
-
-        //判断是否为js文件的正则表达式
-        var rjs = /.js/,
-        //不能够设置的属性
-            rinvalidAttr = /^(src|href|type|path|rel)$/,
-        //是否为绝对路径
-            rabsoluteUrl = /^(?:\s*http:\/\/|\/)/;
+            root = option.root ? option.root.replace(rlastSlash, '') + "/" : "";
 
         //计数器和锁，在异步加载模式下使用
         var count = 0, scripts = [];

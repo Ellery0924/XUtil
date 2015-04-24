@@ -11,7 +11,12 @@ loader.config({
 });
 
 loader.load([
-    {path: 'http://localhost:63342/XUtil/XUtil/tests/loader/testFiles/jquery.js', 'data-main': "try"},
+    {
+        'path': 'http://localhost:63342/XUtil/XUtil/tests/loader/testFiles/jquery.js',
+        'data-main': "try",
+        '   src   ': "failed",
+        'type': "failed"
+    },
     'testFiles/jquery-ui.js',
     'testFiles/js1.js',
     'testFiles/js2.js',
