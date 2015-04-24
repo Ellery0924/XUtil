@@ -16,218 +16,217 @@
  */
 
 XUtil.XDialog = function (option) {
-	var helpers = XUtil.helpers;
-	var log = helpers.log;
+    var helpers = XUtil.helpers;
+    var log = helpers.log;
 
-	var width = option.width || 'auto',
-		height = option.height || 'auto',
-		top = option.top || 0.5,
-		left = option.left || 0.5,
-		closable = option.closable || false,
-		onClose = $.isFunction(option.onClose) ? option.onClose : function () {
-			log('XDialog: XDialog is closed.');
-		},
-		onOpen = $.isFunction(option.onOpen) ? option.onOpen : function () {
-			log('XDialog: XDialog is opened.');
-		},
-		autoOpen = false,
-		id = option.id || 'XDialog-' + helpers.guid(),
-		className = option.className || '',
-		title = option.title || 'XDialog',
-		zIndex = option.zIndex || 1000,
-		draggable = option.draggable || false,
-		animated = option.animated || false,
-		content = option.content || '';
+    var width = option.width || 'auto',
+        height = option.height || 'auto',
+        top = option.top || 0.5,
+        left = option.left || 0.5,
+        closable = option.closable || false,
+        onClose = $.isFunction(option.onClose) ? option.onClose : function () {
+            log('XDialog: XDialog is closed.');
+        },
+        onOpen = $.isFunction(option.onOpen) ? option.onOpen : function () {
+            log('XDialog: XDialog is opened.');
+        },
+        autoOpen = false,
+        id = option.id || 'XDialog-' + helpers.guid(),
+        className = option.className || '',
+        title = option.title || 'XDialog',
+        zIndex = option.zIndex || 1000,
+        draggable = option.draggable || false,
+        animated = option.animated || false,
+        content = option.content || '';
 
-	var initialOpen = true;
+    var initialOpen = true;
 
-	var offsetWidth,
-		offsetHeight;
+    var offsetWidth,
+        offsetHeight;
 
-	var domNode,
-		contentNode,
-		closeBtn,
-		titleBar;
+    var domNode,
+        contentNode,
+        closeBtn,
+        titleBar;
 
-	var opened = false;
+    var opened = false;
 
-	var dragStart = false,
-		prevX,
-		prevY,
-		shield;
+    var dragStart = false,
+        prevX,
+        prevY,
+        shield;
 
-	var that = {};
+    var that = {};
 
-	if ('autoOpen' in option && option.autoOpen === true) {
-		autoOpen = true;
-	}
+    if ('autoOpen' in option && option.autoOpen === true) {
+        autoOpen = true;
+    }
 
-	domNode = $("<div class='XDialog' id='" + id + "'>" +
-	"<div class='XDialogTitle'>" +
-	"<span class='titleText'></span>" +
-	"<span class='closeBtn'></span>" +
-	"</div>" +
-	"<div class='XDialogContent'></div>" +
-	"</div>")[0];
+    domNode = $("<div class='XDialog' id='" + id + "'>" +
+    "<div class='XDialogTitle'>" +
+    "<span class='titleText'></span>" +
+    "<span class='closeBtn'></span>" +
+    "</div>" +
+    "<div class='XDialogContent'></div>" +
+    "</div>")[0];
 
-	contentNode = $(domNode).find('.XDialogContent')[0];
+    contentNode = $(domNode).find('.XDialogContent')[0];
 
-	closeBtn = $(domNode).find('.closeBtn')[0];
+    closeBtn = $(domNode).find('.closeBtn')[0];
 
-	titleBar = $(domNode).find('.titleText')[0];
+    titleBar = $(domNode).find('.titleText')[0];
 
-	$(document.body)
-		.append(domNode)
-		.css('position', 'relative');
+    $(document.body)
+        .append(domNode)
+        .css('position', 'relative');
 
-	$(closeBtn).click(function (event) {
-		event.stopPropagation();
-		that.close();
-	});
+    $(closeBtn).click(function (event) {
+        event.stopPropagation();
+        that.close();
+    });
 
-	that.domNode = domNode;
-	that.contentNode = contentNode;
-	that.closeBtn = closeBtn;
+    that.domNode = domNode;
+    that.contentNode = contentNode;
+    that.closeBtn = closeBtn;
 
-	that.init = function () {
+    that.init = function () {
 
+        $(domNode).css('position', 'fixed')
+            .css('top', top)
+            .css('left', left)
+            .css('z-index', zIndex)
+            .hide()
+            .addClass(className);
 
-		$(domNode).css('position', 'fixed')
-			.css('top', top)
-			.css('left', left)
-			.css('z-index', zIndex)
-			.hide()
-			.addClass(className);
+        $(contentNode).css('min-width', '200px')
+            .css('min-height', '200px')
+            .css('height', height)
+            .css('width', width)
+            .html(content);
 
-		$(contentNode).css('min-width', '200px')
-			.css('min-height', '200px')
-			.css('height', height)
-			.css('width', width)
-			.html(content);
+        $(domNode).find('.closeBtn').hide();
 
-		$(domNode).find('.closeBtn').hide();
+        offsetWidth = $(domNode).outerWidth();
+        offsetHeight = $(domNode).outerHeight();
 
-		offsetWidth = $(domNode).outerWidth();
-		offsetHeight = $(domNode).outerHeight();
+        $(domNode).css('margin-top', -offsetHeight / 2)
+            .css('margin-left', -offsetWidth / 2);
 
-		$(domNode).css('margin-top', -offsetHeight / 2)
-			.css('margin-left', -offsetWidth / 2);
+        $(domNode).find('.titleText').html(title);
 
-		$(domNode).find('.titleText').html(title);
+        if (autoOpen) {
+            that.open();
+        }
 
-		if (autoOpen) {
-			that.open();
-		}
+        if (closable) {
+            $(domNode).find('.closeBtn').show();
+        }
 
-		if (closable) {
-			$(domNode).find('.closeBtn').show();
-		}
+        //拖拽功能
+        if (draggable) {
 
-		//拖拽功能
-		if (draggable) {
+            $(titleBar).css('cursor', 'move');
 
-			$(titleBar).css('cursor', 'move');
+            $(titleBar).on('mousedown.' + id, function (e) {
+                if (e.which === 1) {
+                    dragStart = true;
+                    prevX = e.pageX;
+                    prevY = e.pageY;
+                }
+            });
 
-			$(titleBar).on('mousedown.' + id, function (e) {
-				if (e.which === 1) {
-					dragStart = true;
-					prevX = e.pageX;
-					prevY = e.pageY;
-				}
-			});
+            $(document).on('mousemove.' + id, function (e) {
+                var currentX, currentY, deltaX, deltaY;
+                if (dragStart) {
+                    titleBar.onselectstart = function () {
+                        return false;
+                    };
 
-			$(document).on('mousemove.' + id, function (e) {
-				var currentX, currentY, deltaX, deltaY;
-				if (dragStart) {
-					titleBar.onselectstart = function () {
-						return false;
-					};
+                    currentX = e.pageX;
+                    currentY = e.pageY;
+                    deltaX = currentX - prevX;
+                    deltaY = currentY - prevY;
 
-					currentX = e.pageX;
-					currentY = e.pageY;
-					deltaX = currentX - prevX;
-					deltaY = currentY - prevY;
+                    top += +deltaY;
+                    left += deltaX;
+                    $(domNode).css('top', top)
+                        .css('left', left);
 
-					top += +deltaY;
-					left += deltaX;
-					$(domNode).css('top', top)
-						.css('left', left);
+                    prevX = currentX;
+                    prevY = currentY;
+                }
+            });
 
-					prevX = currentX;
-					prevY = currentY;
-				}
-			});
+            $(document).on('mouseup.' + id, function () {
+                dragStart = false;
+                titleBar.onselectstart = function () {
+                    return true;
+                };
+            });
+        }
 
-			$(document).on('mouseup.' + id, function () {
-				dragStart = false;
-				titleBar.onselectstart = function () {
-					return true;
-				};
-			});
-		}
+        return that;
+    };
 
-		return that;
-	};
+    that.set = function (attrs) {
 
-	that.set = function (attrs) {
+        ('width' in attrs) && (width = attrs.width);
+        ('height' in attrs) && (height = attrs.height);
+        ('top' in attrs) && (top = attrs.top);
+        ('left' in attrs) && (left = attrs.left);
+        ('title' in attrs) && (title = attrs.title);
+        ('className' in attrs) && (className = attrs.className);
+        ('closable' in attrs) && (closable = Boolean(attrs.closable));
+        ('onClose' in attrs && $.isFunction(attrs.onClose)) && (onClose = attrs.onClose);
+        ('onOpen' in attrs && $.isFunction(attrs.onOpen)) && (onOpen = attrs.onOpen);
+        ('autoOpen' in attrs) && (autoOpen = Boolean(attrs.autoOpen));
+        ('zIndex' in attrs && $.isNumeric(attrs.zIndex)) && (zIndex = attrs.zIndex);
+        ('draggable' in attrs) && (draggable = attrs.draggable);
+        ('animated' in attrs) && (animated = Boolean(attrs.animated));
+        ('content' in attrs) && (content = attrs.content.toString());
 
-		('width' in attrs) && (width = attrs.width);
-		('height' in attrs) && (height = attrs.height);
-		('top' in attrs) && (top = attrs.top);
-		('left' in attrs) && (left = attrs.left);
-		('title' in attrs) && (title = attrs.title);
-		('className' in attrs) && (className = attrs.className);
-		('closable' in attrs) && (closable = Boolean(attrs.closable));
-		('onClose' in attrs && $.isFunction(attrs.onClose)) && (onClose = attrs.onClose);
-		('onOpen' in attrs && $.isFunction(attrs.onOpen)) && (onOpen = attrs.onOpen);
-		('autoOpen' in attrs) && (autoOpen = Boolean(attrs.autoOpen));
-		('zIndex' in attrs && $.isNumeric(attrs.zIndex)) && (zIndex = attrs.zIndex);
-		('draggable' in attrs) && (draggable = attrs.draggable);
-		('animated' in attrs) && (animated = Boolean(attrs.animated));
-		('content' in attrs) && (content = attrs.content.toString());
+        return that;
+    };
 
-		return that;
-	};
+    that.open = function () {
 
-	that.open = function () {
+        if (!opened) {
 
-		if (!opened) {
+            animated ? $(domNode).fadeIn('fast') : $(domNode).show();
+            opened = true;
+            shield = helpers.addShield(document.body, 0.5, zIndex - 1);
+            onOpen();
 
-			animated ? $(domNode).fadeIn('fast') : $(domNode).show();
-			opened = true;
-			shield = helpers.addShield(document.body, 0.5, zIndex - 1);
-			onOpen();
+            if (initialOpen) {
 
-			if (initialOpen) {
+                top = $(window).height() * top - $(domNode).outerHeight() / 2;
+                left = $(window).width() * left - $(domNode).outerWidth() / 2;
 
-				top = $(window).height() * top - $(domNode).outerHeight() / 2;
-				left = $(window).width() * left - $(domNode).outerWidth() / 2;
+                $(domNode).css('top', top)
+                    .css('left', left)
+                    .css('margin-top', 0)
+                    .css('margin-left', 0);
 
-				$(domNode).css('top', top)
-					.css('left', left)
-					.css('margin-top', 0)
-					.css('margin-left', 0);
+                initialOpen = false;
+            }
+        }
 
-				initialOpen = false;
-			}
-		}
+        return that;
+    };
 
-		return that;
-	};
+    that.close = function () {
+        if (opened) {
 
-	that.close = function () {
-		if (opened) {
+            animated ? $(domNode).fadeOut('fast') : $(domNode).hide();
+            opened = false;
+            helpers.removeShield();
+            onClose();
+        }
 
-			animated ? $(domNode).fadeOut('fast') : $(domNode).hide();
-			opened = false;
-			helpers.removeShield();
-			onClose();
-		}
+        return that;
+    };
 
-		return that;
-	};
+    that.init();
 
-	that.init();
-
-	return that;
+    return that;
 };

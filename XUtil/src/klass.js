@@ -4,66 +4,66 @@
  */
 XUtil.Class = function (parent) {
 
-	var sub;
+    var sub;
 
-	function Class() {
+    function Class() {
 
-		this.init.apply(this, arguments);
-		Class.instances[XUtil.helpers.guid()] = this;
-	}
+        this.init.apply(this, arguments);
+        Class.instances[XUtil.helpers.guid()] = this;
+    }
 
-	Class.instances = {};
+    Class.instances = {};
 
-	Class.find = function (id) {
+    Class.find = function (id) {
 
-		if (id && Class.instances[id]) {
+        if (id && Class.instances[id]) {
 
-			return Class.instances[id];
-		}
-	};
+            return Class.instances[id];
+        }
+    };
 
-	if (parent) {
+    if (parent) {
 
-		sub = function () {
-		};
-		sub.prototype = parent.prototype;
-		Class.prototype = new sub();
-		Class.parent = parent;
-		Class.parentProto = parent.prototype;
-		Class.parentInit = parent.prototype.init;
-	}
+        sub = function () {
+        };
+        sub.prototype = parent.prototype;
+        Class.prototype = new sub();
+        Class.parent = parent;
+        Class.parentProto = parent.prototype;
+        Class.parentInit = parent.prototype.init;
+    }
 
-	Class.prototype.init = function () {
-	};
+    Class.prototype.init = function () {
+    };
 
-	Class.prototype.constructor = Object;
+    Class.prototype.constructor = Object;
 
-	Class.include = function (mixin) {
+    Class.include = function (mixin) {
 
-		var key;
+        var key;
 
-		for (key in mixin) {
+        for (key in mixin) {
 
-			if (mixin.hasOwnProperty(key)) {
+            if (mixin.hasOwnProperty(key)) {
 
-				Class.prototype[key] = mixin[key];
-			}
-		}
-	};
+                Class.prototype[key] = mixin[key];
+            }
+        }
+    };
 
-	Class.extend = function (mixin) {
+    Class.extend = function (mixin) {
 
-		var key;
+        var key;
 
-		for (key in mixin) {
+        for (key in mixin) {
 
-			if (mixin.hasOwnProperty(key)) {
+            if (mixin.hasOwnProperty(key)) {
 
-				Class[key] = mixin[key];
-			}
+                Class[key] = mixin[key];
+            }
 
-		}
-	};
+        }
+    };
 
-	return Class;
+    return Class;
 };
