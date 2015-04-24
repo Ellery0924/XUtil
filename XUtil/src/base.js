@@ -147,12 +147,12 @@ XUtil.helpers = {
                         }
                         else if (isCheckbox || isRadio) {
 
-                            if (value === 'true') {
+                            if (value.toString() === 'true') {
 
                                 ele.prop('checked', true);
                                 ele.trigger('change');
                             }
-                            else if (value === 'false') {
+                            else if (value.toString() === 'false') {
 
                                 ele.prop('checked', false);
                                 ele.trigger('change');
