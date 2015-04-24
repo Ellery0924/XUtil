@@ -55,6 +55,7 @@ XUtil.helpers = {
 
     //本库内部使用的控制台函数
     log: function () {
+
         var args = Array.prototype.slice.apply(arguments, []);
         args.unshift('(XUtil) ');
         console.log.apply(console, args);
@@ -62,7 +63,9 @@ XUtil.helpers = {
 
     //内部使用的异常工厂函数
     error: function () {
+
         if (arguments[0]) {
+
             var newStr = '(XUtil) ' + arguments[0].toString();
             return new Error(newStr);
         }
@@ -164,12 +167,12 @@ XUtil.helpers = {
                         }
                         else if (isCheckbox || isRadio) {
 
-                            if (value === 'true') {
+                            if (value.toString() === 'true') {
 
                                 ele.prop('checked', true);
                                 ele.trigger('change');
                             }
-                            else if (value === 'false') {
+                            else if (value.toString() === 'false') {
 
                                 ele.prop('checked', false);
                                 ele.trigger('change');
@@ -323,6 +326,9 @@ XUtil.helpers = {
         }
     }
 };
+
+//修正console对象
+XUtil.helpers.shimConsole();
 
 /**
  * 源文件：src/accordion.js

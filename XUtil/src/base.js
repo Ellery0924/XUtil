@@ -38,6 +38,7 @@ XUtil.helpers = {
 
     //本库内部使用的控制台函数
     log: function () {
+
         var args = Array.prototype.slice.apply(arguments, []);
         args.unshift('(XUtil) ');
         console.log.apply(console, args);
@@ -45,7 +46,9 @@ XUtil.helpers = {
 
     //内部使用的异常工厂函数
     error: function () {
+
         if (arguments[0]) {
+
             var newStr = '(XUtil) ' + arguments[0].toString();
             return new Error(newStr);
         }
@@ -306,3 +309,6 @@ XUtil.helpers = {
         }
     }
 };
+
+//修正console对象
+XUtil.helpers.shimConsole();
