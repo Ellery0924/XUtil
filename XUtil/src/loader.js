@@ -114,7 +114,7 @@ XUtil.loader = (function () {
         };
 
         //在循环中使用的变量
-        var script, src, xhr, xhrSync, scriptText,
+        var script, src, xhrSync, scriptText,
             link, href, rel;
 
         for (var i = 0; i < files.length; i++) {
@@ -186,7 +186,7 @@ XUtil.loader = (function () {
                     else if (isAsyncNotEval) {
 
                         count++;
-                        (function(){
+                        (function () {
 
                             var xhr = new XMLHttpRequest();
                             //这里给xhr设置src和file是为了消除闭包导致的引用问题
