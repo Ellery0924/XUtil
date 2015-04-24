@@ -4,7 +4,7 @@
 
 
 var loader = XUtil.loader,
-    mod="async noteval";
+    mod = "async noteval";
 
 loader.config({
     mod: mod,
@@ -25,7 +25,7 @@ loader.load([
     'testFiles/css2.css'
 ], function (scripts) {
 
-    if(mod==='async noteval') {
+    if (mod === 'async noteval') {
 
         console.log(scripts);
 
@@ -37,10 +37,8 @@ loader.load([
         }
 
         console.log('is jquery defined? ' + (window.$ !== undefined));
-
-        console.log(window.$, window.$().dialog, a, b);
     }
-    else if(mod==='sync'){
+    else if (mod === 'sync') {
 
         console.log(scripts);
     }

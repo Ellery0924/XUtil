@@ -911,7 +911,7 @@ XUtil.loader = (function () {
         //不能够设置的属性
             rinvalidAttr = /^\s*(src|href|type|path|rel)\s*$/,
         //是否为绝对路径
-            rabsoluteUrl = /^\s*http:\/\/|\//,
+            rabsoluteUrl = /^(http:\/\/|\/)/,
             rlastSlash = /\/$/;
 
         //需要加载的文件数组，循环中对数组中每一个元素的引用，是否为绝对url
@@ -926,7 +926,7 @@ XUtil.loader = (function () {
         //计数器和锁，在异步加载模式下使用
         var count = 0, scripts = [];
 
-        var head = document.head;
+        var head = document.head || document.getElementsByTagName('head')[0];
 
         //工具函数，向document.head中插入一个script标签，但阻止浏览器自动解析其中的js代码
         var insertScriptNotEval = function (script, src, scriptText) {
@@ -939,7 +939,7 @@ XUtil.loader = (function () {
 
             //由于谷歌浏览器在修改script标签的src属性时依然会执行js代码，因此先设置src，后更改type
             script.src = src;
-            //将type重置为text/javascript，不会执行其中的代码，在ff和chrome下测试通过
+            //将type重置为text/javascript，不会执行其中的代码，在ff/chrome/ie7+下测试通过
             script.type = "text/javascript";
         };
 
@@ -966,7 +966,7 @@ XUtil.loader = (function () {
         };
 
         //在循环中使用的变量
-        var script, src, xhr, xhrSync, scriptText,
+        var script, src, xhrSync, scriptText,
             link, href, rel;
 
         for (var i = 0; i < files.length; i++) {
@@ -998,7 +998,7 @@ XUtil.loader = (function () {
                     scriptText = xhrSync.responseText;
 
                     //手动解析js代码
-                    globalEval(text);
+                    globalEval(scriptText);
 
                     insertScriptNotEval(script, src, scriptText);
 
@@ -1038,34 +1038,37 @@ XUtil.loader = (function () {
                     else if (isAsyncNotEval) {
 
                         count++;
+                        (function () {
 
-                        xhr = new XMLHttpRequest();
-                        //这里给xhr设置src和file是为了消除闭包导致的引用问题
-                        xhr.src = src;
-                        xhr.file = file;
-                        xhr.open("GET", src);
-                        xhr.send();
+                            var xhr = new XMLHttpRequest();
+                            //这里给xhr设置src和file是为了消除闭包导致的引用问题
+                            xhr.src = src;
+                            xhr.file = file;
+                            xhr.open("GET", src);
 
-                        xhr.onreadystatechange = function () {
+                            xhr.onreadystatechange = function () {
 
-                            if (this.status === 200 && this.readyState === 4) {
+                                if (this.readyState == 4 && this.status === 200) {
 
-                                //将获取的脚本文本加入scripts数组
-                                scripts.push(this.responseText);
+                                    //将获取的脚本文本加入scripts数组
+                                    scripts.push(this.responseText);
 
-                                //向head插入一个script标签但制止浏览器自动解析脚本
-                                var script = document.createElement('script');
-                                insertScriptNotEval(script, this.src, this.responseText);
+                                    //向head插入一个script标签但制止浏览器自动解析脚本
+                                    var script = document.createElement('script');
+                                    insertScriptNotEval(script, this.src, this.responseText);
 
-                                //所有脚本下载完成后触发回调
-                                if (--count === 0) {
+                                    //所有脚本下载完成后触发回调
+                                    if (--count === 0) {
 
-                                    callback(scripts);
+                                        callback(scripts);
+                                    }
+
+                                    setAttr(this.file, script, true);
                                 }
+                            };
 
-                                setAttr(this.file, script, true);
-                            }
-                        };
+                            xhr.send(null);
+                        })();
                     }
                 }
             }
