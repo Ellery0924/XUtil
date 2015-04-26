@@ -186,6 +186,7 @@ XUtil.loader = (function () {
                     else if (isAsyncNotEval) {
 
                         count++;
+                        //创造一个局部作用域，消除可能的闭包导致的引用问题
                         (function () {
 
                             var xhr = new XMLHttpRequest();

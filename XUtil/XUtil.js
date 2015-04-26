@@ -911,7 +911,7 @@ XUtil.loader = (function () {
         //不能够设置的属性
             rinvalidAttr = /^\s*(src|href|type|path|rel)\s*$/,
         //是否为绝对路径
-            rabsoluteUrl = /^(?:http:\/\/|\/)/,
+            rabsoluteUrl = /^\s*(?:http:\/\/|\/)/,
             rlastSlash = /\/$/;
 
         //需要加载的文件数组，循环中对数组中每一个元素的引用，是否为绝对url
@@ -1038,6 +1038,7 @@ XUtil.loader = (function () {
                     else if (isAsyncNotEval) {
 
                         count++;
+                        //创造一个局部作用域，消除可能的闭包导致的引用问题
                         (function () {
 
                             var xhr = new XMLHttpRequest();
