@@ -16,7 +16,8 @@ loader.load([
         'path': 'http://localhost:63342/XUtil/XUtil/tests/loader/testFiles/jquery.js',
         'data-main': "try",
         '   src   ': "failed",
-        'type': "failed"
+        'type': "failed",
+        'anotherAttr':'true'
     },
     'testFiles/jquery-ui.js',
     'testFiles/js1.js',
