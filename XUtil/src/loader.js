@@ -11,6 +11,19 @@
  * 接受的第二个参数为结束回调，接受一个数组为参数，在同步和普通异步模式下，该数组保存的是添加到页面中的所有script标签
  * 在异步下载但不解析模式下，该数组保存了所有下载的脚本的text
  * */
+/*
+ * 脚本/css文件加载器，支持加载js和css文件并解析
+ * 其中js有异步和同步两种模式，异步模式下有两种子模式：异步下载并解析，异步下载但不解析
+ * 三种模式的实现方式分别是：
+ * 同步：同步ajax请求获取脚本文本+全局eval，之后向document.head中插入script标签但阻止浏览器自动解析
+ * 异步解析：script标签
+ * 异步下载不解析：异步ajax请求获取脚本文本，之后向document.head中插入script标签但阻止浏览器自动解析（计划以此为基础实现CommonJS加载器）
+ *
+ * 接受一个数组作为参数，如果数组中的元素是对象，则会根据对象的path属性加载文件，并且将对象其他的属性设为script/link标签的html属性
+ * 如果是一个字符串，则只加载文件
+ * 接受的第二个参数为结束回调，接受一个数组为参数，在同步和普通异步模式下，该数组保存的是添加到页面中的所有script标签
+ * 在异步下载但不解析模式下，该数组保存了所有下载的脚本的text
+ * */
 XUtil.loader = (function () {
 
     //私有的option对象
@@ -54,12 +67,14 @@ XUtil.loader = (function () {
         //特殊异步模式，下载脚本但不解析
             isAsyncNotEval = mod.search('async') !== -1 && mod.search('noteval') !== -1;
 
-        //判断是否为js文件的正则表达式
-        var rjs = /.js/,
+        //正则表达式，js文件
+        var rjs = /\.js(\?.*)?$/,
+        //css/html文件
+            rother = /(?:(\.css)|(\.htm[l]?))(\?.*)?$/,
         //不能够设置的属性
             rinvalidAttr = /^\s*(src|href|type|path|rel)\s*$/,
         //是否为绝对路径
-            rabsoluteUrl = /^\s*(?:http:\/\/|\/)/,
+            rabsoluteUrl = /^\s*(?:http:\/\/|\/|\.\/|\.\.\/)/,
             rlastSlash = /\/$/;
 
         //需要加载的文件数组，循环中对数组中每一个元素的引用，是否为绝对url
@@ -113,8 +128,25 @@ XUtil.loader = (function () {
             }
         };
 
+        //工具函数，发送一个同步ajax请求
+        var sendSyncRequest = function (src) {
+
+            var xhrSync = new XMLHttpRequest();
+            xhrSync.open("GET", src, false);
+            xhrSync.send();
+
+            if (xhrSync.status !== 200) {
+
+                throw new Error(src + ':' + xhrSync.status + ' ' + xhrSync.statusText);
+            }
+
+            return xhrSync.responseText;
+        };
+
+        var isJs, isCss, isHtml;
+
         //在循环中使用的变量
-        var script, src, xhrSync, scriptText,
+        var script, src, resText,
             link, href, rel;
 
         for (var i = 0; i < files.length; i++) {
@@ -123,10 +155,16 @@ XUtil.loader = (function () {
 
             //修正file对象
             file = typeof file === 'object' ? file : {path: file};
+            //修正src
+            src = modifyPath(file.path);
 
-            if (rjs.test(file.path)) {
-                //修正script标签的src属性
-                src = modifyPath(file.path);
+            isJs = rjs.test(file.path);
+            isCss = rother.exec(file.path) ? !!rother.exec(file.path)[1] : false;
+            isHtml = rother.exec(file.path) ? !!rother.exec(file.path)[2] : false;
+
+            //加载js文件
+            if (isJs) {
+
                 script = document.createElement('script');
 
                 //同步加载模式
@@ -134,21 +172,12 @@ XUtil.loader = (function () {
                 //之后插入script标签，并且通过一些很奇怪的方法阻止浏览器自动解析新插入的script标签
                 if (isSync) {
 
-                    xhrSync = new XMLHttpRequest();
-                    xhrSync.open("GET", src, false);
-                    xhrSync.send();
-
-                    if (xhrSync.status !== 200) {
-
-                        throw new Error(src + ':' + xhrSync.status + ' ' + xhrSync.statusText);
-                    }
-
-                    scriptText = xhrSync.responseText;
+                    resText = sendSyncRequest(src);
 
                     //手动解析js代码
-                    globalEval(scriptText);
+                    globalEval(resText);
 
-                    insertScriptNotEval(script, src, scriptText);
+                    insertScriptNotEval(script, src, resText);
 
                     scripts.push(script);
 
@@ -229,7 +258,7 @@ XUtil.loader = (function () {
                 }
             }
             //加载css文件，只支持异步加载
-            else {
+            else if (isCss) {
 
                 link = document.createElement('link');
                 href = modifyPath(file.path);
@@ -242,9 +271,14 @@ XUtil.loader = (function () {
 
                 head.appendChild(link);
             }
-        }
+            //加载html文件，同步ajax请求
+            //只支持一次加载一个html模板
+            //不要和js混用
+            else if (isHtml) {
 
-        console.log('all done!');
+                return sendSyncRequest(src);
+            }
+        }
 
         if (option.mod === 'sync') {
 

@@ -4,7 +4,7 @@
 
 
 var loader = XUtil.loader,
-    mod = "async noteval";
+    mod = "sync";
 
 loader.config({
     mod: mod,
