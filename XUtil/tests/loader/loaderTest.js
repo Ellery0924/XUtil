@@ -11,7 +11,7 @@ loader.config({
     root: "http://localhost:63342/XUtil/XUtil/tests/loader/"
 });
 
-loader.load([
+loader.loadJs([
     {
         'path': 'http://localhost:63342/XUtil/XUtil/tests/loader/testFiles/jquery.js',
         'data-main': "try",
@@ -21,9 +21,7 @@ loader.load([
     },
     'testFiles/jquery-ui.js',
     'testFiles/js1.js',
-    'testFiles/js2.js',
-    'testFiles/css1.css',
-    'testFiles/css2.css'
+    'testFiles/js2.js'
 ], function (scripts) {
 
     if (mod === 'async noteval') {
