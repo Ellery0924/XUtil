@@ -307,6 +307,64 @@ XUtil.helpers = {
         for (i = 0; i < arguments.length; i++) {
             (new Image()).src = arguments[i].toString();
         }
+    },
+
+    //安全事件
+    safeEvent:function (origHandler, context, gap, endGap) {
+
+        var lastTriggerTime,
+        //这个变量用来保存当前的实参
+            args,
+        //这个变量用于判断是否是首次触发
+        //如果orgHandler尚未被触发过，则直接触发
+            hasTriggered = false;
+
+        context = context || window;
+        gap = gap || 300;
+
+        //工具函数，在context上触发orgHandler并且重置lastTriggerTime
+        var trigger = function (now) {
+
+            lastTriggerTime = now;
+            origHandler.apply(context, args);
+        };
+
+        return function () {
+
+            var now = $.now(),
+            //用于监控结束时刻的定时器
+                endWatcher;
+
+            args = Array.prototype.slice.apply(arguments);
+
+            if (hasTriggered) {
+
+                if (now - lastTriggerTime > gap ) {
+
+                    trigger(now);
+                }
+            }
+            else {
+
+                hasTriggered = true;
+                trigger(now);
+
+                if(endGap) {
+
+                    endWatcher = setInterval(function () {
+
+                        var now = $.now();
+
+                        if (now - lastTriggerTime >= endGap) {
+
+                            trigger(now);
+                            clearInterval(endWatcher);
+                            hasTriggered = false;
+                        }
+                    }, gap / 10);
+                }
+            }
+        };
     }
 };
 
