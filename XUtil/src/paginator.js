@@ -1,17 +1,22 @@
 /**
  * Created by Ellery1 on 15/7/9.
  */
+/**
+ * Created by Ellery1 on 15/7/6.
+ */
+
 XUtil.paginator = function (opt) {
 
     var renderTo = opt.renderTo,
         total = opt.pageCount || 12,
         range = opt.range || 5,
-        callback = opt.callback || function (pageNum) {
+        callback = opt.callback || function (pageNum, prevPage) {
 
-                window.console && console.log('rendering ' + pageNum);
+                window.console && console.log('rendering ' + pageNum + "," + prevPage);
             };
 
-    var currentPage = opt.defaultPage || 1;
+    var currentPage = opt.defaultPage || 1,
+        prevPage = -1;
 
     var controllerTmpl = "<div class='paginator_ctrl'></div>",
         commonBtnWrapTmpl = "<table class='commonBtnWrap'>" +
@@ -32,6 +37,11 @@ XUtil.paginator = function (opt) {
     var getCurrentPage = function () {
 
         return currentPage;
+    };
+
+    var getPrevPage = function () {
+
+        return prevPage;
     };
 
     var toPage = function (pageNum) {
@@ -122,10 +132,11 @@ XUtil.paginator = function (opt) {
             ctrlDom.find('[pageIndex=' + pageNum + ']').addClass('current');
         };
 
+        prevPage = currentPage;
         currentPage = pageNum;
 
         renderCtrlBar();
-        callback(pageNum);
+        callback(pageNum, prevPage);
     };
 
     var toPrev = function () {
@@ -182,6 +193,8 @@ XUtil.paginator = function (opt) {
         toPage: toPage,
         toPrev: toPrev,
         toNext: toNext,
-        getCurrentPage: getCurrentPage
+        getCurrentPage: getCurrentPage,
+        getPrevPage: getPrevPage
     };
 };
+
