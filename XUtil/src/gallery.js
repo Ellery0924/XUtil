@@ -3,12 +3,6 @@
  */
 XUtil.gallery = function (option) {
 
-    var isIE6 = navigator.userAgent.search('MSIE 6.0') !== -1,
-        isIE7 = navigator.userAgent.search('MSIE 7.0') !== -1;
-
-    //安全事件,在一个固定时间段内只允许触发一次的事件
-    var safeEvent = XUtil.helpers.safeEvent;
-
     //获取用户配置
     //目标dom
     var renderTo = $(option.renderTo),
@@ -136,31 +130,9 @@ XUtil.gallery = function (option) {
 
     //加载图片
     //在加载图片完成前显示loading图片,完成后重置src属性为原图片src
-    var _loadImg = function (img, callback) {
-
-        var tmp,
-            src = img.getAttribute('real-src'),
-            loaded = parseInt(img.getAttribute('loaded'), 10) === 1,
-            index = img.getAttribute('img-index');
-
-        //ie6和ie7有奇特bug,可能是因为cloneNode复
-        if (!loaded || isIE6 || isIE7) {
-
-            tmp = $(new Image());
-
-            tmp.on('load', function () {
-
-                $(img).attr({
-                    src: src,
-                    loaded: 1
-                });
-
-                callback && callback();
-                tmp.remove();
-            })
-                .attr('src', src);
-        }
-    };
+    var _loadImg = XUtil.helpers.loadImg;
+    //安全事件,在一个固定时间段内只允许触发一次的事件
+    var _safeEvent = XUtil.helpers.safeEvent;
 
     //设置自动翻页
     var _setAutoScroll = function () {
@@ -381,12 +353,12 @@ XUtil.gallery = function (option) {
         //事件绑定
         (function bindEvent() {
 
-            var _safeNext = safeEvent(function () {
+            var _safeNext = _safeEvent(function () {
 
                 toNext();
             }, window, animationTime);
 
-            var _safePrev = safeEvent(function () {
+            var _safePrev = _safeEvent(function () {
 
                 toPrev();
             }, window, animationTime);

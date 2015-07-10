@@ -365,6 +365,37 @@ XUtil.helpers = {
                 }
             }
         };
+    },
+
+    //加载图片
+    //在加载图片完成前显示loading图片,完成后重置src属性为原图片src
+    loadImg:function (img, callback) {
+
+        var isIE6 = navigator.userAgent.search('MSIE 6.0') !== -1,
+            isIE7 = navigator.userAgent.search('MSIE 7.0') !== -1;
+
+        var tmp,
+            src = img.getAttribute('real-src'),
+            loaded = parseInt(img.getAttribute('loaded'), 10) === 1,
+            index = img.getAttribute('img-index');
+
+        //ie6和ie7有奇特bug,可能是因为cloneNode复
+        if (!loaded || isIE6 || isIE7) {
+
+            tmp = $(new Image());
+
+            tmp.on('load', function () {
+
+                $(img).attr({
+                    src: src,
+                    loaded: 1
+                });
+
+                callback && callback();
+                tmp.remove();
+            })
+                .attr('src', src);
+        }
     }
 };
 
