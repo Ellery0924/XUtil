@@ -27,7 +27,9 @@ XUtil.XWaterfall = function (option) {
         },
         fetchCallback = $.isFunction(option.fetchCallback) ? option.fetchCallback : function (status, renderTo, fetchedLen) {
             log('XWaterfall: ' + status);
-        };
+        },
+        fetchSizeAttr = option.fetchSizeAttr || 'fetchSize',
+        currentSizeAttr = option.currentSizeAttr || 'currentSize';
 
     //私有成员及方法
     //  保存当前显示元素之前被移除元素的缓冲
@@ -120,7 +122,8 @@ XUtil.XWaterfall = function (option) {
     //向瀑布流中追加新元素
     that.fetch = function () {
         var i, currentLen;
-        var targetCol;
+        var targetCol,
+            attrData = {};
 
         currentLen = all.length;
 
@@ -144,11 +147,11 @@ XUtil.XWaterfall = function (option) {
                 //在本次fetch操作结束之前，禁止新的fetch操作
                 fetchEnable = false;
 
+                attrData[fetchSizeAttr] = fetchSize;
+                attrData[currentSizeAttr] = currentSize;
+
                 //会自动为get请求添加两个参数，当前已经获取的所有资源的数量和期望获取元素的数量(等于fetchSize)
-                $.get(url, {
-                    fetchSize: fetchSize,
-                    currentSize: all.length
-                })
+                $.get(url, attrData)
                     .done(function (data) {
                         if (data.message === 'success') {
 

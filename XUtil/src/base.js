@@ -310,7 +310,7 @@ XUtil.helpers = {
     },
 
     //安全事件
-    safeEvent:function (origHandler, context, gap, endGap) {
+    safeEvent: function (origHandler, context, gap, endGap) {
 
         var lastTriggerTime,
         //这个变量用来保存当前的实参
@@ -339,7 +339,7 @@ XUtil.helpers = {
 
             if (hasTriggered) {
 
-                if (now - lastTriggerTime > gap ) {
+                if (now - lastTriggerTime > gap) {
 
                     trigger(now);
                 }
@@ -349,7 +349,7 @@ XUtil.helpers = {
                 hasTriggered = true;
                 trigger(now);
 
-                if(endGap) {
+                if (endGap) {
 
                     endWatcher = setInterval(function () {
 
@@ -369,7 +369,7 @@ XUtil.helpers = {
 
     //加载图片
     //在加载图片完成前显示loading图片,完成后重置src属性为原图片src
-    loadImg:function (img, callback) {
+    loadImg: function (img, callback) {
 
         var isIE6 = navigator.userAgent.search('MSIE 6.0') !== -1,
             isIE7 = navigator.userAgent.search('MSIE 7.0') !== -1;
