@@ -141,12 +141,15 @@ XUtil.paginator = function (opt) {
 
     var toPrev = function () {
 
-        toPage(--currentPage);
+        //为了记录前一页的index,这么做是必须的
+        var pageNum = currentPage - 1;
+        toPage(pageNum);
     };
 
     var toNext = function () {
 
-        toPage(++currentPage);
+        var pageNum = currentPage + 1;
+        toPage(pageNum);
     };
 
     var init = function () {
