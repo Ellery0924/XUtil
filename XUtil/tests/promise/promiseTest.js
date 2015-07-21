@@ -8,7 +8,7 @@ var foo = function () {
 
     setTimeout(function () {
 
-        p.resolve('promise1 resolved!');
+        p.resolve('p resolved!');
     }, 1000);
 
     return p;
@@ -20,7 +20,7 @@ var bar = function () {
 
     setTimeout(function () {
 
-        p2.reject('promise2 rejected!');
+        p2.resolve('p2 resolved!');
     }, 1000);
 
     return p2;
@@ -32,21 +32,21 @@ var baz = function () {
 
     setTimeout(function () {
 
-        p3.reject('promise3 rejected!');
+        p3.resolve('p3 resolved!');
     }, 1000);
 
     return p3;
 };
 
-foo().then(function (str,p) {
+foo().then(function (str, p) {
 
-    console.log(str,p);
+    console.log(str);
     return bar();
 }).then(function (str) {
 
     console.log(str);
     return baz();
-},function(err){
+}, function (err) {
 
     console.log(err);
 }).then(function (str) {
@@ -55,16 +55,16 @@ foo().then(function (str,p) {
 }, function (err) {
 
     console.log(err);
-}).then(function(){
+}).then(function () {
 
     console.log('ended!');
 });
 
-console.log(p.status);
+console.log('the initial status of p is:' + p.status);
 
 setTimeout(function () {
 
-    console.log(p.status);
+    console.log('the final status of p is:' + p.status);
     p.then(function () {
 
         console.log('success callback1 called!');

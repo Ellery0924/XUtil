@@ -17,16 +17,9 @@
 
         var rootPromise = this.parentPromise;
 
-        while (rootPromise) {
+        while (rootPromise.parentPromise) {
 
-            if (rootPromise.parentPromise) {
-
-                rootPromise = rootPromise.parentPromise;
-            }
-            else {
-
-                break;
-            }
+            rootPromise = rootPromise.parentPromise;
         }
 
         this.status = status;
