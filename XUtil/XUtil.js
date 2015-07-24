@@ -86,103 +86,6 @@ XUtil.helpers = {
             };
         }
     },
-
-    //    为input和select绑定默认值
-    //    接受一个参数对象，格式如下：
-    //    {
-    //      'selector':value
-    //    }
-    // 其中selector是要绑定的dom元素的选择器
-    // value为要绑定的值
-    // 对于checkbox和radio，应设置为true/false(字符串)
-    //
-    // 如果不传参数则会检索页面中所有带data-bind属性的元素，并将data-bind的值设为默认值
-    //
-    // 在绑定之后会触发input和select的change事件
-    //
-    // 更新：
-    // 现在可以接受两个字符串作为参数，例如bind('input[type=text]','something')
-    // 将会查找页面内所有被selector选中的元素，然后将它们的默认值置为他们本身的data-bind属性
-    // 这样可以按顺序为一系列dom执行绑定，例如
-    // bind(ele1,str1);
-    // bind(ele2,str2);
-    // 在ele2的值依赖于ele1的取值时会有用，比如select2中的option依赖于select1的值来动态生成的情况
-    // 如果不传入第二个参数，则使用元素的data-bind属性作为默认值（如果存在）
-    //
-    // 如果第一个参数是对象
-    // 可以接受第二个参数attr，将data-bind属性改为其它属性名
-    bindInput: function (option, attr) {
-
-        var bindAttr = attr || 'data-bind',
-            bind = XUtil.helpers.bindInput;
-
-        var arg = {};
-
-        if (!option) {
-
-            arg['[' + bindAttr + ']'] = '';
-            bind.call(window, arg);
-        }
-        else if (typeof option === 'string') {
-
-            if (attr === undefined) {
-
-                arg = {};
-                arg[option] = '';
-
-                bind.call(window, arg);
-            }
-            else {
-
-                arg = {};
-                arg[option] = attr;
-
-                bind.call(window, arg);
-            }
-        }
-        else {
-
-            for (var selector in option) {
-
-                if (option.hasOwnProperty(selector)) {
-
-                    var eleArr = $(selector);
-
-                    for (var i = 0; i < eleArr.length; i++) {
-
-                        var ele = $(selector).eq(i),
-                            value = (option[selector] || (ele.attr(bindAttr) ? ele.attr(bindAttr) : '')).toString();
-
-                        var isTextInput = ele.is('input[type=text]'),
-                            isTextArea = ele.is('textarea'),
-                            isHiddenInput = ele.is('input[type=hidden]'),
-                            isCheckbox = ele.is('input[type=checkbox]'),
-                            isRadio = ele.is('input[type=radio]'),
-                            isSelect = ele.is('select');
-
-                        if (isTextInput || isTextArea || isHiddenInput || isSelect) {
-
-                            ele.val(value);
-                            ele.trigger('change');
-                        }
-                        else if (isCheckbox || isRadio) {
-
-                            if (value.toString() === 'true') {
-
-                                ele.prop('checked', true);
-                                ele.trigger('change');
-                            }
-                            else if (value.toString() === 'false') {
-
-                                ele.prop('checked', false);
-                                ele.trigger('change');
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
     //为某个元素添加一层半透明遮罩，用来屏蔽该元素以及内部元素的响应事件
     //接收三个参数targetDiv(目标div), opacity(透明度)和zIndex(z-index的值)
     //返回遮罩元素
@@ -1375,6 +1278,117 @@ XUtil.Class = function (parent) {
 
     return Class;
 };
+/**. * Cr
+ eated by Ellery1
+ on 15/7/17 */
+
+XUtil.lazyLoad = function (opt) {
+
+    var loadImg = XUtil.helpers.loadImg;
+
+    opt = opt || {};
+
+    //偏移量,浏览器视口下边缘往上
+    var offset = opt.offset || 20,
+        loadingImg = opt.loadingImg || 'http://www.51pptmoban.com/d/file/2013/01/15/e5b91925a8b2f56d69ec4c0cb492d5c1.jpg';
+
+    //图片cache
+    var imgCache,
+    //下标,记录当前已经加载的图片在数组中的index
+        loadedIndex;
+
+    //刷新cache,在页面图片数量发生变动时应该调用这个方法
+    var refresh = function (dom) {
+
+        //这里只做一次选择器操作
+        var lazyDom = $('[lazyload],[lazyLoad]', dom || document);
+
+        imgCache = [];
+
+        loadedIndex = -1;
+
+        //将需要lazyload的图片加入缓存
+        //这里需一次性计算图片的top并存储
+        //对于定位不能确定的图片(比如一直在屏幕中移动),无法应用这个方法
+        $(lazyDom).each(function () {
+
+            //如果dom本身是一个img,则将dom加入缓存
+            if (this.nodeName.toLowerCase() === 'img') {
+
+                imgCache.push({
+                    dom: this,
+                    top: $(this).offset().top
+                });
+            }
+            //否则将该dom所有的img子孙元素加入缓存
+            else {
+
+                $('img[real-src]', this).not('[src]').each(function () {
+
+                    imgCache.push({
+                        dom: this,
+                        top: $(this).offset().top
+                    });
+                });
+            }
+        });
+
+        //将缓存中的图片按top排序
+        imgCache.sort(function (first, second) {
+
+            return first.top - second.top;
+        });
+
+        //加载当前屏幕中的图片
+        doScrollLoad();
+    };
+
+    //滚动条事件handler
+    //工作原理如下:
+    //当滚动条向下运动时,实时获取window的scrollTop(windowTop),并将警戒线设为windowTop+windowHeight+offset,
+    //从loadedIndex+1遍历缓存数组,将windowTop与缓存中的元素对比
+    //如果图片在警戒线以上,则加载该图片,并将loadedIndex加1
+    //否则结束循环
+    //这样回避了大量的选择器操作,并且每次只需要遍历数组中头几个很少的元素
+    var doScrollLoad = function () {
+
+        var windowTop = $(window).scrollTop(),
+            watchLine = windowTop + $(window).height() + offset;
+
+        for (var i = loadedIndex + 1; i < imgCache.length; i++) {
+
+            var imgObj = imgCache[i],
+                img = imgCache[i].dom,
+                imgTop = imgObj.top;
+
+            if (imgTop < watchLine) {
+
+                loadImg(img, loadingImg);
+                loadedIndex++;
+            }
+            else {
+
+                break;
+            }
+        }
+
+        return this;
+    };
+
+    (function bindEvent() {
+
+        $(window).on('scroll.lazyLoad', function () {
+
+            doScrollLoad();
+        });
+    })();
+
+    return {
+        refresh: refresh
+    };
+};
+
+
 /*
  * 脚本/css/html文件加载器，支持加载js和css文件并解析
  * 其中js有异步和同步两种模式，异步模式下有两种子模式：异步下载并解析，异步下载但不解析
@@ -2901,6 +2915,12 @@ XUtil.XPopout = function (option) {
 
 /**
  * Created by Ellery1 on 15/7/19.
+ * 符合Promise/A标准的Promise实现
+ * 不支持progress方法
+ * 支持链式调用的then方法,即多个异步过程串行执行
+ * 不依赖Deferred来resolve/reject
+ *
+ * P.S.:出于对大多数人使用习惯的尊重,作者很不情愿地使用了传统的JavaScript模拟类实现
  */
 (function (global) {
 
@@ -2942,12 +2962,10 @@ XUtil.XPopout = function (option) {
         }
         else if (status === 'resolved') {
 
-            console.log('This promise has been resolved, done callback should be called immediately here.');
             done && done.apply(global);
         }
         else if (status === 'rejected') {
 
-            console.log('This promise has been rejected, fail callback should be called immediately here.');
             fail && fail.apply(global);
         }
 
@@ -2981,12 +2999,11 @@ XUtil.XPopout = function (option) {
         }
         else if (!next) {
 
-            console.log('all callbacks called!');
             this._setFinalStatus("resolved");
         }
-        else {
+        else if (this.status !== 'pending') {
 
-            console.log('This promise has been resolved/rejected!');
+            console.log('this promise has been resolved/rejected!');
         }
     };
 

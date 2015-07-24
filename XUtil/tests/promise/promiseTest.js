@@ -3,6 +3,7 @@
  */
 var Promise = XUtil.Promise;
 var p = new Promise();
+console.log('the initial status of p is:' + p.status);
 
 var foo = function () {
 
@@ -60,11 +61,11 @@ foo().then(function (str, p) {
     console.log('ended!');
 });
 
-console.log('the initial status of p is:' + p.status);
-
 setTimeout(function () {
 
     console.log('the final status of p is:' + p.status);
+    console.log('now we are going to try to bind new done callbacks to p,');
+    console.log('which should be called immediately here...');
     p.then(function () {
 
         console.log('success callback1 called!');

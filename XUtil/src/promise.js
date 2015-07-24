@@ -1,5 +1,11 @@
 /**
  * Created by Ellery1 on 15/7/19.
+ * 符合Promise/A标准的Promise实现
+ * 不支持progress方法
+ * 支持链式调用的then方法,即多个异步过程串行执行
+ * 不依赖Deferred来resolve/reject
+ *
+ * P.S.:出于对大多数人使用习惯的尊重,作者很不情愿地使用了传统的JavaScript模拟类实现
  */
 (function (global) {
 
@@ -41,12 +47,10 @@
         }
         else if (status === 'resolved') {
 
-            console.log('This promise has been resolved, done callback should be called immediately here.');
             done && done.apply(global);
         }
         else if (status === 'rejected') {
 
-            console.log('This promise has been rejected, fail callback should be called immediately here.');
             fail && fail.apply(global);
         }
 
@@ -80,12 +84,11 @@
         }
         else if (!next) {
 
-            console.log('all callbacks called!');
             this._setFinalStatus("resolved");
         }
-        else {
+        else if (this.status !== 'pending') {
 
-            console.log('This promise has been resolved/rejected!');
+            console.log('this promise has been resolved/rejected!');
         }
     };
 
