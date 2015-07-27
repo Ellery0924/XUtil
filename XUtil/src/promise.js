@@ -21,7 +21,7 @@
 
     fn._setFinalStatus = function (status) {
 
-        var rootPromise = this.parentPromise;
+        var rootPromise = this;
 
         while (rootPromise.parentPromise) {
 
@@ -29,7 +29,7 @@
         }
 
         this.status = status;
-        rootPromise && (rootPromise.status = status);
+        rootPromise.status = status;
 
         return rootPromise;
     };
@@ -114,4 +114,38 @@
     };
 
     XUtil.Promise = Promise;
+
+    XUtil.when = function () {
+
+        var whenPromise = new Promise();
+
+        var taskArr = [].slice.call(arguments),
+            results = [],
+            count = taskArr.length;
+
+        var i, task;
+
+        for (i = 0; i < taskArr.length; i++) {
+
+            task = taskArr[i];
+
+            if (task.isPromise) {
+
+                task.then(function (result) {
+
+                    results.push(result);
+
+                    if (!--count) {
+
+                        whenPromise.resolve(results);
+                    }
+                }, function (err) {
+
+                    whenPromise.reject(err);
+                });
+            }
+        }
+
+        return whenPromise;
+    };
 })(window);

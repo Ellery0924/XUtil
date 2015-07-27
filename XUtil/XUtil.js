@@ -288,7 +288,6 @@ XUtil.helpers = {
     },
 
     //加载图片
-    //在加载图片完成前显示loading图片,完成后重置src属性为原图片src
     loadImg: function (img, callback) {
 
         var isIE6 = navigator.userAgent.search('MSIE 6.0') !== -1,
@@ -296,25 +295,23 @@ XUtil.helpers = {
 
         var tmp,
             src = img.getAttribute('real-src'),
-            loaded = parseInt(img.getAttribute('loaded'), 10) === 1,
+            loaded = img.getAttribute('loaded') === '1',
             index = img.getAttribute('img-index');
 
         //ie6和ie7有奇特bug,可能是因为cloneNode复
         if (!loaded || isIE6 || isIE7) {
 
-            tmp = $(new Image());
+            tmp = new Image();
 
-            tmp.on('load', function () {
+            tmp.onload = function () {
 
-                $(img).attr({
-                    src: src,
-                    loaded: 1
-                });
+                img.setAttribute('src', src);
+                img.setAttribute('loaded', '1');
 
                 callback && callback();
-                tmp.remove();
-            })
-                .attr('src', src);
+                tmp = null;
+            };
+            tmp.src = src;
         }
     }
 };
@@ -1290,58 +1287,13 @@ XUtil.lazyLoad = function (opt) {
 
     //偏移量,浏览器视口下边缘往上
     var offset = opt.offset || 20,
-        loadingImg = opt.loadingImg || 'http://www.51pptmoban.com/d/file/2013/01/15/e5b91925a8b2f56d69ec4c0cb492d5c1.jpg';
+        loadingImg = opt.loadingImg || '//www.baidu.com/img/bdlogo.png',
+        eventName = opt.eventName || 'scroll.lazyLoad';
 
     //图片cache
-    var imgCache,
+    var imgCache = [],
     //下标,记录当前已经加载的图片在数组中的index
         loadedIndex;
-
-    //刷新cache,在页面图片数量发生变动时应该调用这个方法
-    var refresh = function (dom) {
-
-        //这里只做一次选择器操作
-        var lazyDom = $('[lazyload],[lazyLoad]', dom || document);
-
-        imgCache = [];
-
-        loadedIndex = -1;
-
-        //将需要lazyload的图片加入缓存
-        //这里需一次性计算图片的top并存储
-        //对于定位不能确定的图片(比如一直在屏幕中移动),无法应用这个方法
-        $(lazyDom).each(function () {
-
-            //如果dom本身是一个img,则将dom加入缓存
-            if (this.nodeName.toLowerCase() === 'img') {
-
-                imgCache.push({
-                    dom: this,
-                    top: $(this).offset().top
-                });
-            }
-            //否则将该dom所有的img子孙元素加入缓存
-            else {
-
-                $('img[real-src]', this).not('[src]').each(function () {
-
-                    imgCache.push({
-                        dom: this,
-                        top: $(this).offset().top
-                    });
-                });
-            }
-        });
-
-        //将缓存中的图片按top排序
-        imgCache.sort(function (first, second) {
-
-            return first.top - second.top;
-        });
-
-        //加载当前屏幕中的图片
-        doScrollLoad();
-    };
 
     //滚动条事件handler
     //工作原理如下:
@@ -1363,7 +1315,7 @@ XUtil.lazyLoad = function (opt) {
 
             if (imgTop < watchLine) {
 
-                loadImg(img, loadingImg);
+                loadImg(img);
                 loadedIndex++;
             }
             else {
@@ -1375,12 +1327,64 @@ XUtil.lazyLoad = function (opt) {
         return this;
     };
 
+    //刷新cache,在页面图片数量发生变动时应该调用这个方法
+    var refresh = function (dom) {
+
+        //这里只做一次选择器操作
+        var lazyDom = $('[lazyload],[lazyLoad]', dom || document);
+
+        imgCache = [];
+
+        loadedIndex = -1;
+
+        //将需要lazyload的图片加入缓存
+        //这里需一次性计算图片的top并存储
+        //对于定位不能确定的图片(比如一直在屏幕中移动),无法应用这个方法
+        $(lazyDom).each(function () {
+
+            //如果dom本身是一个img,则将dom加入缓存
+            if (this.nodeName.toLowerCase() === 'img' && this.getAttribute('loaded') !== '1') {
+
+                imgCache.push({
+                    dom: this,
+                    top: $(this).offset().top
+                });
+
+                loadingImg && $(this).prop('src', loadingImg);
+            }
+            //否则将该dom所有的img子孙元素加入缓存
+            else {
+
+                $('img[real-src]', this).not('[loaded=1]').each(function () {
+
+                    imgCache.push({
+                        dom: this,
+                        top: $(this).offset().top
+                    });
+
+                    loadingImg && $(this).attr('src', loadingImg);
+                });
+            }
+        });
+
+        //将缓存中的图片按top排序
+        imgCache.sort(function (first, second) {
+
+            return first.top - second.top;
+        });
+
+        //加载当前屏幕中的图片
+        doScrollLoad();
+    };
+
     (function bindEvent() {
 
-        $(window).on('scroll.lazyLoad', function () {
+        $(window)
+            .off(eventName)
+            .on(eventName, function () {
 
-            doScrollLoad();
-        });
+                doScrollLoad();
+            });
     })();
 
     return {
@@ -2936,7 +2940,7 @@ XUtil.XPopout = function (option) {
 
     fn._setFinalStatus = function (status) {
 
-        var rootPromise = this.parentPromise;
+        var rootPromise = this;
 
         while (rootPromise.parentPromise) {
 
@@ -2944,29 +2948,28 @@ XUtil.XPopout = function (option) {
         }
 
         this.status = status;
-        rootPromise && (rootPromise.status = status);
+        rootPromise.status = status;
 
         return rootPromise;
     };
 
     fn.then = function (done, fail) {
 
-        var status = this.status;
-
-        if (status === "pending") {
-
-            this.queue.push({
-                done: done,
-                fail: fail
-            });
-        }
-        else if (status === 'resolved') {
-
-            done && done.apply(global);
-        }
-        else if (status === 'rejected') {
-
-            fail && fail.apply(global);
+        switch (this.status) {
+            case 'pending':
+                this.queue.push({
+                    done: done,
+                    fail: fail
+                });
+                break;
+            case 'resolved':
+                done && done.apply(global);
+                break;
+            case 'rejected':
+                fail && fail.apply(global);
+                break;
+            default :
+                break;
         }
 
         return this;
@@ -3030,6 +3033,40 @@ XUtil.XPopout = function (option) {
     };
 
     XUtil.Promise = Promise;
+
+    XUtil.when = function () {
+
+        var whenPromise = new Promise();
+
+        var taskArr = [].slice.call(arguments),
+            results = [],
+            count = taskArr.length;
+
+        var i, task;
+
+        for (i = 0; i < taskArr.length; i++) {
+
+            task = taskArr[i];
+
+            if (task.isPromise) {
+
+                task.then(function (result) {
+
+                    results.push(result);
+
+                    if (!--count) {
+
+                        whenPromise.resolve(results);
+                    }
+                }, function (err) {
+
+                    whenPromise.reject(err);
+                });
+            }
+        }
+
+        return whenPromise;
+    };
 })(window);
 /*
  * 源文件：src/table.js
