@@ -10,58 +10,13 @@ XUtil.lazyLoad = function (opt) {
 
     //偏移量,浏览器视口下边缘往上
     var offset = opt.offset || 20,
-        loadingImg = opt.loadingImg || 'http://www.51pptmoban.com/d/file/2013/01/15/e5b91925a8b2f56d69ec4c0cb492d5c1.jpg';
+        loadingImg = opt.loadingImg || '//www.baidu.com/img/bdlogo.png',
+        eventName = opt.eventName || 'scroll.lazyLoad';
 
     //图片cache
-    var imgCache,
+    var imgCache = [],
     //下标,记录当前已经加载的图片在数组中的index
         loadedIndex;
-
-    //刷新cache,在页面图片数量发生变动时应该调用这个方法
-    var refresh = function (dom) {
-
-        //这里只做一次选择器操作
-        var lazyDom = $('[lazyload],[lazyLoad]', dom || document);
-
-        imgCache = [];
-
-        loadedIndex = -1;
-
-        //将需要lazyload的图片加入缓存
-        //这里需一次性计算图片的top并存储
-        //对于定位不能确定的图片(比如一直在屏幕中移动),无法应用这个方法
-        $(lazyDom).each(function () {
-
-            //如果dom本身是一个img,则将dom加入缓存
-            if (this.nodeName.toLowerCase() === 'img') {
-
-                imgCache.push({
-                    dom: this,
-                    top: $(this).offset().top
-                });
-            }
-            //否则将该dom所有的img子孙元素加入缓存
-            else {
-
-                $('img[real-src]', this).not('[src]').each(function () {
-
-                    imgCache.push({
-                        dom: this,
-                        top: $(this).offset().top
-                    });
-                });
-            }
-        });
-
-        //将缓存中的图片按top排序
-        imgCache.sort(function (first, second) {
-
-            return first.top - second.top;
-        });
-
-        //加载当前屏幕中的图片
-        doScrollLoad();
-    };
 
     //滚动条事件handler
     //工作原理如下:
@@ -83,7 +38,7 @@ XUtil.lazyLoad = function (opt) {
 
             if (imgTop < watchLine) {
 
-                loadImg(img, loadingImg);
+                loadImg(img);
                 loadedIndex++;
             }
             else {
@@ -95,12 +50,64 @@ XUtil.lazyLoad = function (opt) {
         return this;
     };
 
+    //刷新cache,在页面图片数量发生变动时应该调用这个方法
+    var refresh = function (dom) {
+
+        //这里只做一次选择器操作
+        var lazyDom = $('[lazyload],[lazyLoad]', dom || document);
+
+        imgCache = [];
+
+        loadedIndex = -1;
+
+        //将需要lazyload的图片加入缓存
+        //这里需一次性计算图片的top并存储
+        //对于定位不能确定的图片(比如一直在屏幕中移动),无法应用这个方法
+        $(lazyDom).each(function () {
+
+            //如果dom本身是一个img,则将dom加入缓存
+            if (this.nodeName.toLowerCase() === 'img' && this.getAttribute('loaded') !== '1') {
+
+                imgCache.push({
+                    dom: this,
+                    top: $(this).offset().top
+                });
+
+                loadingImg && $(this).prop('src', loadingImg);
+            }
+            //否则将该dom所有的img子孙元素加入缓存
+            else {
+
+                $('img[real-src]', this).not('[loaded=1]').each(function () {
+
+                    imgCache.push({
+                        dom: this,
+                        top: $(this).offset().top
+                    });
+
+                    loadingImg && $(this).attr('src', loadingImg);
+                });
+            }
+        });
+
+        //将缓存中的图片按top排序
+        imgCache.sort(function (first, second) {
+
+            return first.top - second.top;
+        });
+
+        //加载当前屏幕中的图片
+        doScrollLoad();
+    };
+
     (function bindEvent() {
 
-        $(window).on('scroll.lazyLoad', function () {
+        $(window)
+            .off(eventName)
+            .on(eventName, function () {
 
-            doScrollLoad();
-        });
+                doScrollLoad();
+            });
     })();
 
     return {

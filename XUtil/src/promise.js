@@ -36,22 +36,21 @@
 
     fn.then = function (done, fail) {
 
-        var status = this.status;
-
-        if (status === "pending") {
-
-            this.queue.push({
-                done: done,
-                fail: fail
-            });
-        }
-        else if (status === 'resolved') {
-
-            done && done.apply(global);
-        }
-        else if (status === 'rejected') {
-
-            fail && fail.apply(global);
+        switch (this.status) {
+            case 'pending':
+                this.queue.push({
+                    done: done,
+                    fail: fail
+                });
+                break;
+            case 'resolved':
+                done && done.apply(global);
+                break;
+            case 'rejected':
+                fail && fail.apply(global);
+                break;
+            default :
+                break;
         }
 
         return this;

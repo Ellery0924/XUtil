@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        img {
+            height:500px !important;
+            display:block;
+        }
+    </style>
+</head>
+<body>
+<script src='../../../vendor/jquery.js'></script>
+<script src='../../src/base.js'></script>
+<script src='../../src/lazyLoad.js'></script>
+<script src='lazyLoadTest.js'></script>
+<!--<script src='../../../vendor/socket.io.js'></script>-->
+<!--<script src='../../../vendor/livereload.js'></script>-->
+<div id="test">
+    <button id="start">start!</button>
+    <!--对于每张图片需要填的是 real-src属性(注意不是src!):图片的url,link属性:点击图片和标题栏后跳转的url-->
+    <!--title:图片标题,也是显示在浮层中的大标题, text:浮层中的描述文本-->
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="和平饭店艺术中心" text="外滩百年老店的低调奢华外滩百年老店的低调" lazyload
+         real-src="http://himg3.qunarzz.com/imgs/201401/23/Z7-ECT9onb1G4LTWZ720.jpg"
+         link="http://www.baidu.com"/>
+    <!--以下每张图片需要填的内容同上-->
+    <img title="测试2" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onubumwITZ720.jpg"/>
+    <img title="测试3" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试4" lazyload
+         real-src="//www.baidu.com/img/bdlogo.png"/>
+    <img title="测试5" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/bj_xierdun.jpg"/>
+    <img title="测试6" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFZFU7RSJi748.jpg"/>
+    <img title="测试7" text="一段文本一段文本" lazyload
+         real-src="http://img1.qunarzz.com/des-mis/ad/1506/99/8d1ff032adbbc9.jpg"/>
+    <img title="测试8" text="一段文本一段文本" lazyload
+         real-src="http://simg1.qunarzz.com/ugc/ad/sanya_wenhuadongfang.jpg"/>
+    <img title="测试9" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <img title="测试10" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201502/13/JhS1_tJRlsxLAxs6Ji748.jpg"/>
+    <img title="测试11" text="一段文本一段文本" lazyload
+         real-src="http://userimg.qunar.com/imgs/201210/18/JhS1_tJjGFl95x42Ji748.jpg"/>
+    <img title="测试12" text="一段文本一段文本" lazyload
+         real-src="http://himg1.qunarzz.com/imgs/201401/23/Z7-ECT9onuJs_yCiZ720.jpg"/>
+    <div id="console"></div>
+    <button id="stop">stop</button>
+</div>
+</body>
+</html>
