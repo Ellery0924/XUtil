@@ -223,18 +223,29 @@ XUtil.helpers = {
             hasTriggered = false;
 
         context = context || window;
-        gap = gap || 300;
+
+        if (gap && gap < 50) {
+
+            window.console && console.warn('safeEvent: 设置的间隔值过小!自动调整为50ms');
+            gap = 50;
+        }
+
+        if (endGap && endGap < gap) {
+
+            window.console && console.warn('safeEvent: 设置的endGap过小!自动调整为一倍gap');
+            endGap = gap;
+        }
 
         //工具函数，在context上触发orgHandler并且重置lastTriggerTime
-        var trigger = function (now) {
+        var trigger = function (now, trigger) {
 
             lastTriggerTime = now;
-            origHandler.apply(context, args);
+            trigger && origHandler.apply(context, args);
         };
 
         return function () {
 
-            var now = $.now(),
+            var now = new Date().valueOf(),
             //用于监控结束时刻的定时器
                 endWatcher;
 
@@ -244,27 +255,27 @@ XUtil.helpers = {
 
                 if (now - lastTriggerTime > gap) {
 
-                    trigger(now);
+                    trigger(now, gap);
                 }
             }
             else {
 
                 hasTriggered = true;
-                trigger(now);
+                trigger(now, gap);
 
                 if (endGap) {
 
                     endWatcher = setInterval(function () {
 
-                        var now = $.now();
+                        var now = new Date().valueOf();
 
                         if (now - lastTriggerTime >= endGap) {
 
-                            trigger(now);
+                            trigger(now, endGap);
                             clearInterval(endWatcher);
                             hasTriggered = false;
                         }
-                    }, gap / 10);
+                    }, 50);
                 }
             }
         };
@@ -296,6 +307,34 @@ XUtil.helpers = {
             };
             tmp.src = src;
         }
+    },
+
+    numToHan: function (num) {
+        var unitHan = ['', '十', '百', '千', '万'],
+            numHan = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'],
+            LING = '零';
+
+        num = num + "";
+        var len = num.length, str = '';
+
+        for (var i = len - 1; i >= 0; i--) {
+
+            var j = len - i - 1,
+                singleNum = num.charAt(j);
+
+            var singleUnit = unitHan[i];
+
+            if (singleNum === 0) {
+
+                singleUnit = LING;
+            }
+
+            str += singleNum === 0 ? LING : (numHan[singleNum] + singleUnit);
+        }
+
+        return str
+            .replace(/零+$|^零+/, '')
+            .replace(/零+/g, LING);
     }
 };
 

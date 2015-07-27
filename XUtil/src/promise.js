@@ -119,7 +119,7 @@
 
         var whenPromise = new Promise();
 
-        var taskArr = [].slice.call(arguments),
+        var taskArr = Array.prototype.slice.call(arguments),
             results = [],
             count = taskArr.length;
 

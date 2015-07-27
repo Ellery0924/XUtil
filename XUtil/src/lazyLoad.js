@@ -27,6 +27,12 @@ XUtil.lazyLoad = function (opt) {
     //这样回避了大量的选择器操作,并且每次只需要遍历数组中头几个很少的元素
     var doScrollLoad = function () {
 
+        var start, end, consoleDiv;
+
+        consoleDiv = $('#console');
+
+        start = new Date().valueOf();
+
         var windowTop = $(window).scrollTop(),
             watchLine = windowTop + $(window).height() + offset;
 
@@ -46,6 +52,9 @@ XUtil.lazyLoad = function (opt) {
                 break;
             }
         }
+
+        end = new Date().valueOf();
+        consoleDiv.html(Number(consoleDiv.html()) + end - start);
 
         return this;
     };
@@ -104,10 +113,7 @@ XUtil.lazyLoad = function (opt) {
 
         $(window)
             .off(eventName)
-            .on(eventName, function () {
-
-                doScrollLoad();
-            });
+            .on(eventName, doScrollLoad);
     })();
 
     return {
